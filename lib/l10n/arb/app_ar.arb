@@ -1,0 +1,18 @@
+{
+    "@@locale": "ar",
+    "appTitle": "توصيات ليلة الفيلم",
+    "homeTitle": "اكتشف",
+    "trending": "شائع",
+    "popular": "الأكثر شعبية",
+    "topRated": "الأعلى تقييماً",
+    "search": "بحث",
+    "watchlist": "قائمة المشاهدة",
+    "settings": "الإعدادات",
+    "login": "تسجيل الدخول",
+    "signUp": "إنشاء حساب",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "signInWithGoogle": "تسجيل الدخول باستخدام Google",
+    "signInWithApple": "تسجيل الدخول باستخدام Apple"
+}

@@ -1,0 +1,18 @@
+{
+    "@@locale": "en",
+    "appTitle": "Movie Night Recommender",
+    "homeTitle": "Discover",
+    "trending": "Trending",
+    "popular": "Popular",
+    "topRated": "Top Rated",
+    "search": "Search",
+    "watchlist": "Watchlist",
+    "settings": "Settings",
+    "login": "Login",
+    "signUp": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot Password?",
+    "signInWithGoogle": "Sign in with Google",
+    "signInWithApple": "Sign in with Apple"
+}
