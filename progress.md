@@ -1,11 +1,11 @@
 # Project Progress
 
-- [/] Phase 1: Setup & Core Architecture (MVVM) <!-- id: 5 -->
+- [x] Phase 1: Setup & Core Architecture (MVVM) <!-- id: 5 -->
     - [x] Initialize Flutter Project <!-- id: 5.1 -->
     - [x] Add Dependencies (Firebase, Auth, Bloc, etc.) <!-- id: 5.2 -->
-    - [ ] Setup Localization (EN/AR) <!-- id: 5.3 -->
+    - [x] Setup Localization (EN/AR) <!-- id: 5.3 -->
     - [x] Setup Theme & Assets <!-- id: 5.4 -->
-    - [ ] Implement MovieRepository & API Client <!-- id: 5.5 -->
+    - [x] Implement MovieRepository & API Client <!-- id: 5.5 -->
 - [ ] Phase 2: Authentication (Firebase) <!-- id: 6 -->
     - [ ] Setup Firebase Project <!-- id: 6.1 -->
     - [ ] Implement AuthRepository & AuthBloc <!-- id: 6.2 -->
