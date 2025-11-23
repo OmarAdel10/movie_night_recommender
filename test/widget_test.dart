@@ -7,13 +7,19 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:movie_night_recommender/main.dart';
+import 'package:movie_night_recommender/features/auth/data/repositories/auth_repository.dart';
+import 'package:mocktail/mocktail.dart';
+
+class MockAuthRepository extends Mock implements AuthRepository {}
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+    final mockAuthRepository = MockAuthRepository();
+    when(() => mockAuthRepository.user).thenAnswer((_) => const Stream.empty());
+    
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MovieNightApp());
+    await tester.pumpWidget(MovieNightApp(authRepository: mockAuthRepository));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
