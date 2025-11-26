@@ -52,9 +52,15 @@ dependencies:
   shimmer: ^3.0.0
   smooth_page_indicator: ^1.2.1
   local_auth: ^3.0.0
+  flutter_localizations:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
   bloc_test: ^10.0.0
   mocktail: ^1.0.4
-  flutter_native_splash: ^2.4.7
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

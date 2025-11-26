@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "786692485904",
+    "project_id": "movie-night-recommender-eebf8",
+    "storage_bucket": "movie-night-recommender-eebf8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:786692485904:android:1f4e4ce28cc8c30ee7ab95",
+        "android_client_info": {
+          "package_name": "com.example.movie_night_recommender"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJKWOjAoQV64ZJQbufc8mHfWLvebhoXjI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
