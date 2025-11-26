@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../data/repositories/auth_repository.dart';
@@ -42,6 +42,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthLoginRequested event,
     Emitter<AuthState> emit,
   ) async {
+    emit(const AuthState.loading());
     try {
       await _authRepository.logIn(email: event.email, password: event.password);
     } catch (e) {
@@ -53,6 +54,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthSignUpRequested event,
     Emitter<AuthState> emit,
   ) async {
+    emit(const AuthState.loading());
     try {
       await _authRepository.signUp(email: event.email, password: event.password);
     } catch (e) {
@@ -64,6 +66,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthGoogleSignInRequested event,
     Emitter<AuthState> emit,
   ) async {
+    emit(const AuthState.loading());
     try {
       await _authRepository.signInWithGoogle();
     } catch (e) {
@@ -75,6 +78,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthAppleSignInRequested event,
     Emitter<AuthState> emit,
   ) async {
+    emit(const AuthState.loading());
     try {
       await _authRepository.signInWithApple();
     } catch (e) {

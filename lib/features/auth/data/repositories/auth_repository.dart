@@ -70,16 +70,21 @@ class AuthRepository {
 
   Future<UserCredential> signInWithGoogle() async {
     try {
-      // Initialize GoogleSignIn (required in v7)
-      // Note: scopes are default (email, profile)
-      await _googleSignIn.initialize();
-      
-      final GoogleSignInAccount googleUser = await _googleSignIn.authenticate();
+      // Use dynamic calls to be resilient across google_sign_in versions
+      final dynamic googleUser = await (_googleSignIn as dynamic).signIn();
 
-      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
+      if (googleUser == null) {
+        throw Exception('Google sign-in aborted by user');
+      }
+
+      // The `authentication` value shape differs between versions; access dynamically
+      final dynamic googleAuth = googleUser.authentication;
+      final String? idToken = googleAuth?.idToken as String?;
+      final String? accessToken = googleAuth?.accessToken as String?;
+
       final AuthCredential credential = GoogleAuthProvider.credential(
-        idToken: googleAuth.idToken,
-        accessToken: null,
+        idToken: idToken,
+        accessToken: accessToken,
       );
 
       return await _firebaseAuth.signInWithCredential(credential);

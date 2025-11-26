@@ -219,7 +219,7 @@ class _MovieDetailView extends StatelessWidget {
                     children: movie.genres.map((genre) {
                       return Chip(
                         label: Text(genre.name),
-                        backgroundColor: theme.primaryColor.withOpacity(0.2),
+                        backgroundColor: theme.primaryColor.withValues(alpha: 0.2),
                         labelStyle: TextStyle(color: theme.primaryColor),
                       );
                     }).toList(),

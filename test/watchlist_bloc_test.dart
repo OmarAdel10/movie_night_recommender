@@ -1,13 +1,21 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:movie_night_recommender/features/watchlist/view_models/watchlist_bloc.dart';
 import 'package:movie_night_recommender/data/models/movie_model.dart';
+
+class MockStorage extends Mock implements Storage {}
 
 void main() {
   group('WatchlistBloc', () {
     late WatchlistBloc watchlistBloc;
+    late MockStorage storage;
 
     setUp(() {
+      storage = MockStorage();
+      when(() => storage.write(any(), any<dynamic>())).thenAnswer((_) async {});
+      HydratedBloc.storage = storage;
       watchlistBloc = WatchlistBloc();
     });
 
