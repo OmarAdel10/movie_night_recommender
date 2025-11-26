@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:movie_night_recommender/l10n/arb/app_localizations.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   static const String routeName = '/forgot_password';
