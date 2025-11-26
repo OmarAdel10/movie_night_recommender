@@ -4,40 +4,70 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:movie_night_recommender/l10n/arb/app_localizations.dart';
 import 'package:page_transition/page_transition.dart';
 import 'core/theme/app_theme.dart';
+import 'core/services/local_auth_service.dart';
+import 'data/repositories/movie_repository.dart';
 import 'features/auth/data/repositories/auth_repository.dart';
 import 'features/auth/view_models/auth_bloc.dart';
 import 'features/auth/views/login_screen.dart';
 import 'features/auth/views/sign_up_screen.dart';
 import 'features/auth/views/forgot_password_screen.dart';
+import 'features/onboarding/view_models/onboarding_bloc.dart';
+import 'features/onboarding/views/onboarding_screen.dart';
+import 'features/home/views/home_screen.dart';
+import 'features/movie_detail/views/movie_detail_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // TODO: Add google-services.json (Android) and GoogleService-Info.plist (iOS)
+  // or run `flutterfire configure` to generate firebase_options.dart
+  await Firebase.initializeApp(); 
   
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: kIsWeb
-        ? null
-        : await getApplicationDocumentsDirectory(),
+        ? HydratedStorageDirectory.web
+        : HydratedStorageDirectory((await getApplicationDocumentsDirectory()).path),
   );
 
   final authRepository = AuthRepository();
+  final movieRepository = MovieRepository();
+  final localAuthService = LocalAuthService();
 
-  runApp(MovieNightApp(authRepository: authRepository));
+  runApp(MovieNightApp(
+    authRepository: authRepository,
+    movieRepository: movieRepository,
+    localAuthService: localAuthService,
+  ));
 }
 
 class MovieNightApp extends StatelessWidget {
   final AuthRepository authRepository;
+  final MovieRepository movieRepository;
+  final LocalAuthService localAuthService;
 
-  const MovieNightApp({super.key, required this.authRepository});
+  const MovieNightApp({
+    super.key,
+    required this.authRepository,
+    required this.movieRepository,
+    required this.localAuthService,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider.value(
-      value: authRepository,
-      child: BlocProvider(
-        create: (_) => AuthBloc(authRepository: authRepository),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider.value(value: authRepository),
+        RepositoryProvider.value(value: movieRepository),
+        RepositoryProvider.value(value: localAuthService),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => AuthBloc(authRepository: authRepository)),
+          BlocProvider(create: (_) => OnboardingBloc(movieRepository: movieRepository)),
+        ],
         child: MaterialApp(
           title: 'Movie Night Recommender',
           theme: AppTheme.darkTheme,
@@ -52,14 +82,9 @@ class MovieNightApp extends StatelessWidget {
             Locale('en'), // English
             Locale('ar'), // Arabic
           ],
+          home: const RootScreen(),
           onGenerateRoute: (settings) {
             switch (settings.name) {
-              case '/':
-                return PageTransition(
-                  child: const LoginScreen(), // Start with Login for now
-                  type: PageTransitionType.fade,
-                  settings: settings,
-                );
               case LoginScreen.routeName:
                 return PageTransition(
                   child: const LoginScreen(),
@@ -78,12 +103,115 @@ class MovieNightApp extends StatelessWidget {
                   type: PageTransitionType.rightToLeft,
                   settings: settings,
                 );
+              case OnboardingScreen.routeName:
+                return PageTransition(
+                  child: const OnboardingScreen(),
+                  type: PageTransitionType.fade,
+                  settings: settings,
+                );
+              case HomeScreen.routeName:
+                return PageTransition(
+                  child: const HomeScreen(),
+                  type: PageTransitionType.fade,
+                  settings: settings,
+                );
+              case '/movie-detail':
+                final args = settings.arguments as Map<String, dynamic>;
+                return PageTransition(
+                  child: MovieDetailScreen(
+                    movieId: args['movieId'] as int,
+                    heroTag: args['heroTag'] as String?,
+                  ),
+                  type: PageTransitionType.rightToLeft,
+                  settings: settings,
+                );
               default:
                 return null;
             }
           },
         ),
       ),
+    );
+  }
+}
+
+class RootScreen extends StatefulWidget {
+  const RootScreen({super.key});
+
+  @override
+  State<RootScreen> createState() => _RootScreenState();
+}
+
+class _RootScreenState extends State<RootScreen> {
+  bool _isLocalAuthAuthenticated = false;
+  bool _isCheckingLocalAuth = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkLocalAuth();
+  }
+
+  Future<void> _checkLocalAuth() async {
+    final localAuthService = context.read<LocalAuthService>();
+    final isSupported = await localAuthService.isDeviceSupported();
+
+    if (isSupported) {
+      final authenticated = await localAuthService.authenticate();
+      setState(() {
+        _isLocalAuthAuthenticated = authenticated;
+        _isCheckingLocalAuth = false;
+      });
+    } else {
+      setState(() {
+        _isLocalAuthAuthenticated = true; // Skip if not supported
+        _isCheckingLocalAuth = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_isCheckingLocalAuth) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (!_isLocalAuthAuthenticated) {
+      return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Authentication Required'),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _checkLocalAuth,
+                child: const Text('Retry'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return BlocBuilder<OnboardingBloc, OnboardingState>(
+      builder: (context, onboardingState) {
+        if (!onboardingState.hasSeenOnboarding) {
+          return const OnboardingScreen();
+        }
+
+        return BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, authState) {
+            if (authState.status == AuthStatus.authenticated) {
+              return const HomeScreen();
+            } else {
+              return const LoginScreen();
+            }
+          },
+        );
+      },
     );
   }
 }

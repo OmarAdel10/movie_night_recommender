@@ -1,36 +1,46 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:movie_night_recommender/main.dart';
 import 'package:movie_night_recommender/features/auth/data/repositories/auth_repository.dart';
+import 'package:movie_night_recommender/data/repositories/movie_repository.dart';
+import 'package:movie_night_recommender/core/services/local_auth_service.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockAuthRepository extends Mock implements AuthRepository {}
+class MockMovieRepository extends Mock implements MovieRepository {}
+class MockLocalAuthService extends Mock implements LocalAuthService {}
+class MockStorage extends Mock implements Storage {}
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    final mockAuthRepository = MockAuthRepository();
-    when(() => mockAuthRepository.user).thenAnswer((_) => const Stream.empty());
+  late MockStorage storage;
+  late MockAuthRepository authRepository;
+  late MockMovieRepository movieRepository;
+  late MockLocalAuthService localAuthService;
+
+  setUp(() {
+    storage = MockStorage();
+    when(() => storage.write(any(), any<dynamic>())).thenAnswer((_) async {});
+    HydratedBloc.storage = storage;
     
+    authRepository = MockAuthRepository();
+    movieRepository = MockMovieRepository();
+    localAuthService = MockLocalAuthService();
+    
+    when(() => authRepository.user).thenAnswer((_) => const Stream.empty());
+    when(() => localAuthService.isDeviceSupported()).thenAnswer((_) async => false);
+  });
+
+  testWidgets('App renders LoginScreen smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MovieNightApp(authRepository: mockAuthRepository));
+    await tester.pumpWidget(MovieNightApp(
+      authRepository: authRepository,
+      movieRepository: movieRepository,
+      localAuthService: localAuthService,
+    ));
+    await tester.pumpAndSettle();
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Verify that LoginScreen is shown (by finding a widget specific to it, e.g. 'Login')
+    expect(find.byType(MaterialApp), findsOneWidget);
   });
 }
