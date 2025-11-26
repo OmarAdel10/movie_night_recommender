@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../data/repositories/movie_repository.dart';
 import '../../../data/models/movie_detail_model.dart';
+import '../../../data/models/movie_model.dart';
+import '../../watchlist/view_models/watchlist_bloc.dart';
 import '../view_models/movie_detail_bloc.dart';
 
 class MovieDetailScreen extends StatelessWidget {
@@ -62,6 +64,37 @@ class _MovieDetailView extends StatelessWidget {
         SliverAppBar(
           expandedHeight: 300,
           pinned: true,
+          actions: [
+            BlocBuilder<WatchlistBloc, WatchlistState>(
+              builder: (context, watchlistState) {
+                final movie = context.read<MovieDetailBloc>().state.movieDetail;
+                if (movie == null) return const SizedBox.shrink();
+                
+                final isInWatchlist = watchlistState.isInWatchlist(movie.id);
+                
+                return IconButton(
+                  icon: Icon(
+                    isInWatchlist ? Icons.bookmark : Icons.bookmark_border,
+                  ),
+                  onPressed: () {
+                    context.read<WatchlistBloc>().add(
+                      WatchlistMovieToggled(
+                        Movie(
+                          id: movie.id,
+                          title: movie.title,
+                          overview: movie.overview,
+                          posterPath: movie.posterPath,
+                          backdropPath: movie.backdropPath,
+                          voteAverage: movie.voteAverage,
+                          releaseDate: movie.releaseDate,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ],
           flexibleSpace: FlexibleSpaceBar(
             background: Stack(
               fit: StackFit.expand,

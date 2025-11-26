@@ -31,6 +31,18 @@ class Movie extends Equatable {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'overview': overview,
+      'poster_path': posterPath,
+      'backdrop_path': backdropPath,
+      'vote_average': voteAverage,
+      'release_date': releaseDate,
+    };
+  }
+
   @override
   List<Object?> get props => [id, title, overview, posterPath, backdropPath, voteAverage, releaseDate];
 }
