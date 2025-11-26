@@ -19,6 +19,7 @@ import 'features/onboarding/view_models/onboarding_bloc.dart';
 import 'features/onboarding/views/onboarding_screen.dart';
 import 'features/home/views/home_screen.dart';
 import 'features/movie_detail/views/movie_detail_screen.dart';
+import 'features/search/views/search_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -123,6 +124,12 @@ class MovieNightApp extends StatelessWidget {
                     heroTag: args['heroTag'] as String?,
                   ),
                   type: PageTransitionType.rightToLeft,
+                  settings: settings,
+                );
+              case SearchScreen.routeName:
+                return PageTransition(
+                  child: const SearchScreen(),
+                  type: PageTransitionType.fade,
                   settings: settings,
                 );
               default:

@@ -18,6 +18,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthLoginRequested>(_onAuthLoginRequested);
     on<AuthSignUpRequested>(_onAuthSignUpRequested);
     on<AuthGoogleSignInRequested>(_onAuthGoogleSignInRequested);
+    on<AuthAppleSignInRequested>(_onAuthAppleSignInRequested);
     on<AuthLogoutRequested>(_onAuthLogoutRequested);
 
     _userSubscription = _authRepository.user.listen(
@@ -65,6 +66,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     try {
       await _authRepository.signInWithGoogle();
+    } catch (e) {
+      emit(AuthState.unauthenticated(errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> _onAuthAppleSignInRequested(
+    AuthAppleSignInRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    try {
+      await _authRepository.signInWithApple();
     } catch (e) {
       emit(AuthState.unauthenticated(errorMessage: e.toString()));
     }

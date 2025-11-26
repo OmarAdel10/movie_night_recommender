@@ -33,7 +33,7 @@ class _HomeView extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.search),
             onPressed: () {
-              // TODO: Navigate to search screen
+              Navigator.of(context).pushNamed('/search');
             },
           ),
         ],
