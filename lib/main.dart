@@ -20,6 +20,8 @@ import 'features/onboarding/views/onboarding_screen.dart';
 import 'features/home/views/home_screen.dart';
 import 'features/movie_detail/views/movie_detail_screen.dart';
 import 'features/search/views/search_screen.dart';
+import 'features/watchlist/view_models/watchlist_bloc.dart';
+import 'features/watchlist/views/watchlist_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,6 +70,7 @@ class MovieNightApp extends StatelessWidget {
         providers: [
           BlocProvider(create: (_) => AuthBloc(authRepository: authRepository)),
           BlocProvider(create: (_) => OnboardingBloc(movieRepository: movieRepository)),
+          BlocProvider(create: (_) => WatchlistBloc()),
         ],
         child: MaterialApp(
           title: 'Movie Night Recommender',
@@ -129,6 +132,12 @@ class MovieNightApp extends StatelessWidget {
               case SearchScreen.routeName:
                 return PageTransition(
                   child: const SearchScreen(),
+                  type: PageTransitionType.fade,
+                  settings: settings,
+                );
+              case WatchlistScreen.routeName:
+                return PageTransition(
+                  child: const WatchlistScreen(),
                   type: PageTransitionType.fade,
                   settings: settings,
                 );
