@@ -14,5 +14,22 @@
     "password": "Password",
     "forgotPassword": "Forgot Password?",
     "signInWithGoogle": "Sign in with Google",
-    "signInWithApple": "Sign in with Apple"
+    "signInWithApple": "Sign in with Apple",
+    "profile": "Profile",
+    "username": "Username",
+    "editProfile": "Edit Profile",
+    "language": "Language",
+    "theme": "Theme",
+    "lightTheme": "Light Theme",
+    "darkTheme": "Dark Theme",
+    "systemTheme": "System Theme",
+    "security": "Security",
+    "biometricAuth": "Biometric Authentication",
+    "enableBiometrics": "Enable Biometric Authentication",
+    "about": "About",
+    "version": "Version",
+    "contactDeveloper": "Contact Developer",
+    "emailDeveloper": "Email Developer",
+    "linkedInProfile": "LinkedIn Profile",
+    "logout": "Logout"
 }

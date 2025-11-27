@@ -52,4 +52,55 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get signInWithApple => 'Sign in with Apple';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get username => 'Username';
+
+  @override
+  String get editProfile => 'Edit Profile';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get theme => 'Theme';
+
+  @override
+  String get lightTheme => 'Light Theme';
+
+  @override
+  String get darkTheme => 'Dark Theme';
+
+  @override
+  String get systemTheme => 'System Theme';
+
+  @override
+  String get security => 'Security';
+
+  @override
+  String get biometricAuth => 'Biometric Authentication';
+
+  @override
+  String get enableBiometrics => 'Enable Biometric Authentication';
+
+  @override
+  String get about => 'About';
+
+  @override
+  String get version => 'Version';
+
+  @override
+  String get contactDeveloper => 'Contact Developer';
+
+  @override
+  String get emailDeveloper => 'Email Developer';
+
+  @override
+  String get linkedInProfile => 'LinkedIn Profile';
+
+  @override
+  String get logout => 'Logout';
 }

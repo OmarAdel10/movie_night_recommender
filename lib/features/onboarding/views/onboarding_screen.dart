@@ -91,7 +91,6 @@ class _OnboardingViewState extends State<_OnboardingView> {
                         )
                       else
                         const SizedBox(width: 60), // Placeholder for spacing
-
                       // Indicator
                       SmoothPageIndicator(
                         controller: _pageController,
@@ -222,11 +221,6 @@ class _OnboardingViewState extends State<_OnboardingView> {
                         context.read<OnboardingBloc>().add(OnboardingGenreDeselected(genre));
                       }
                     },
-                    selectedColor: theme.primaryColor.withOpacity(0.2),
-                    checkmarkColor: theme.primaryColor,
-                    labelStyle: TextStyle(
-                      color: isSelected ? theme.primaryColor : Colors.white,
-                    ),
                     backgroundColor: Colors.grey.shade900,
                   );
                 }).toList(),

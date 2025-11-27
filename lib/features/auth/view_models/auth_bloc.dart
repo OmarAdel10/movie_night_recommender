@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../data/repositories/auth_repository.dart';
@@ -82,6 +82,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
+<<<<<<< HEAD
+=======
+  Future<void> _onAuthAppleSignInRequested(
+    AuthAppleSignInRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(const AuthState.loading());
+    try {
+      await _authRepository.signInWithApple();
+    } catch (e) {
+      emit(AuthState.unauthenticated(errorMessage: e.toString()));
+    }
+  }
+
+>>>>>>> origin/development
   Future<void> _onAuthLogoutRequested(
     AuthLogoutRequested event,
     Emitter<AuthState> emit,
