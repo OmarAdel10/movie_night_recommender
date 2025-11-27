@@ -19,15 +19,24 @@ class LocalAuthService {
 
       final canCheckBiometrics = await _auth.canCheckBiometrics;
       if (!canCheckBiometrics) return true; // Allow access if no biometrics enrolled
-
-      // Call authenticate with a minimal set of named parameters.
-      // Parameter names differ across `local_auth` versions; `biometricOnly`
-      // is supported in older/newer variants, so use it here to prefer
-      // biometric auth while allowing device credentials when false.
-      return await _auth.authenticate(
-        localizedReason: 'Please authenticate to access the app',
-        biometricOnly: false,
-      );
+      // Try to authenticate. Some Android embedder configurations
+      // (e.g. when the activity is not a FragmentActivity) will throw a
+      // LocalAuthException with a UI-unavailable error. Catch that and
+      // fall back gracefully instead of crashing the app.
+      try {
+        return await _auth.authenticate(
+          localizedReason: 'Please authenticate to access the app',
+          biometricOnly: false,
+        );
+      } on LocalAuthException catch (e) {
+        // Known runtime issue on some Android hosts: UI not available.
+        // Treat this as a graceful fallback rather than a hard failure.
+        final code = e.code.toString().toLowerCase();
+        if (code.contains('ui') || code.contains('unavailable')) {
+          return true;
+        }
+        return false;
+      }
     } on PlatformException catch (e) {
       // Handle specific error codes if needed
       if (e.code == 'NotAvailable' || e.code == 'NotEnrolled') {
