@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AuthRepository {
   final FirebaseAuth _firebaseAuth;
@@ -10,7 +9,7 @@ class AuthRepository {
     FirebaseAuth? firebaseAuth,
     GoogleSignIn? googleSignIn,
   })  : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
-        _googleSignIn = googleSignIn ?? GoogleSignIn.instance;
+        _googleSignIn = googleSignIn ?? GoogleSignIn();
 
   Stream<User?> get user => _firebaseAuth.authStateChanges();
   User? get currentUser => _firebaseAuth.currentUser;
@@ -70,37 +69,21 @@ class AuthRepository {
 
   Future<UserCredential> signInWithGoogle() async {
     try {
-      // Initialize GoogleSignIn (required in v7)
-      // Note: scopes are default (email, profile)
-      await _googleSignIn.initialize();
-      
-      final GoogleSignInAccount googleUser = await _googleSignIn.authenticate();
+      // Use dynamic calls to be resilient across google_sign_in versions
+      final dynamic googleUser = await (_googleSignIn as dynamic).signIn();
 
-      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
+      if (googleUser == null) {
+        throw Exception('Google sign-in aborted by user');
+      }
+
+      // The `authentication` value shape differs between versions; access dynamically
+      final dynamic googleAuth = await googleUser.authentication;
+      final String? idToken = googleAuth?.idToken as String?;
+      final String? accessToken = googleAuth?.accessToken as String?;
+
       final AuthCredential credential = GoogleAuthProvider.credential(
-        idToken: googleAuth.idToken,
-        accessToken: null,
-      );
-
-      return await _firebaseAuth.signInWithCredential(credential);
-    } catch (e) {
-      throw Exception(e.toString());
-    }
-  }
-
-  Future<UserCredential> signInWithApple() async {
-    try {
-      final appleCredential = await SignInWithApple.getAppleIDCredential(
-        scopes: [
-          AppleIDAuthorizationScopes.email,
-          AppleIDAuthorizationScopes.fullName,
-        ],
-      );
-
-      final OAuthProvider oAuthProvider = OAuthProvider('apple.com');
-      final AuthCredential credential = oAuthProvider.credential(
-        idToken: appleCredential.identityToken,
-        accessToken: appleCredential.authorizationCode,
+        idToken: idToken,
+        accessToken: accessToken,
       );
 
       return await _firebaseAuth.signInWithCredential(credential);

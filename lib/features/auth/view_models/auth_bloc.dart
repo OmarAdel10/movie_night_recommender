@@ -18,8 +18,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthLoginRequested>(_onAuthLoginRequested);
     on<AuthSignUpRequested>(_onAuthSignUpRequested);
     on<AuthGoogleSignInRequested>(_onAuthGoogleSignInRequested);
-    on<AuthAppleSignInRequested>(_onAuthAppleSignInRequested);
     on<AuthLogoutRequested>(_onAuthLogoutRequested);
+    on<AuthResetPasswordRequested>(_onAuthResetPasswordRequested);
 
     _userSubscription = _authRepository.user.listen(
       (user) => add(AuthCheckRequested()),
@@ -42,6 +42,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthLoginRequested event,
     Emitter<AuthState> emit,
   ) async {
+    emit(const AuthState.loading());
     try {
       await _authRepository.logIn(email: event.email, password: event.password);
     } catch (e) {
@@ -53,8 +54,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthSignUpRequested event,
     Emitter<AuthState> emit,
   ) async {
+    emit(const AuthState.loading());
     try {
-      await _authRepository.signUp(email: event.email, password: event.password);
+      final userCredential = await _authRepository.signUp(
+        email: event.email,
+        password: event.password,
+      );
+      // Update display name if username provided
+      if (event.username != null && event.username!.isNotEmpty) {
+        await userCredential.user?.updateDisplayName(event.username);
+        await userCredential.user?.reload();
+      }
     } catch (e) {
       emit(AuthState.unauthenticated(errorMessage: e.toString()));
     }
@@ -64,19 +74,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthGoogleSignInRequested event,
     Emitter<AuthState> emit,
   ) async {
+    emit(const AuthState.loading());
     try {
       await _authRepository.signInWithGoogle();
-    } catch (e) {
-      emit(AuthState.unauthenticated(errorMessage: e.toString()));
-    }
-  }
-
-  Future<void> _onAuthAppleSignInRequested(
-    AuthAppleSignInRequested event,
-    Emitter<AuthState> emit,
-  ) async {
-    try {
-      await _authRepository.signInWithApple();
     } catch (e) {
       emit(AuthState.unauthenticated(errorMessage: e.toString()));
     }
@@ -87,6 +87,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     await _authRepository.logOut();
+    emit(const AuthState.unauthenticated());
+  }
+
+  Future<void> _onAuthResetPasswordRequested(
+    AuthResetPasswordRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    try {
+      await _authRepository.resetPassword(email: event.email);
+      // Don't change auth state, just let the repository send the email
+    } catch (e) {
+      emit(AuthState.unauthenticated(errorMessage: e.toString()));
+    }
   }
 
   @override

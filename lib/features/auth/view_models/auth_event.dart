@@ -22,15 +22,23 @@ class AuthLoginRequested extends AuthEvent {
 class AuthSignUpRequested extends AuthEvent {
   final String email;
   final String password;
+  final String? username;
 
-  const AuthSignUpRequested(this.email, this.password);
+  const AuthSignUpRequested(this.email, this.password, {this.username});
 
   @override
-  List<Object> get props => [email, password];
+  List<Object> get props => [email, password, if (username != null) username!];
 }
 
 class AuthGoogleSignInRequested extends AuthEvent {}
 
-class AuthAppleSignInRequested extends AuthEvent {}
-
 class AuthLogoutRequested extends AuthEvent {}
+
+class AuthResetPasswordRequested extends AuthEvent {
+  final String email;
+
+  const AuthResetPasswordRequested(this.email);
+
+  @override
+  List<Object> get props => [email];
+}
