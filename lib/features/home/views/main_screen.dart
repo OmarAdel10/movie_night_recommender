@@ -1,12 +1,10 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_night_recommender/l10n/arb/app_localizations.dart';
 import '../../settings/views/settings_screen.dart';
 import '../../search/views/search_screen.dart';
 import '../../watchlist/views/watchlist_screen.dart';
 import 'home_screen.dart';
-import '../../../core/theme/app_theme.dart';
 
 class MainScreen extends StatefulWidget {
   static const String routeName = '/main';

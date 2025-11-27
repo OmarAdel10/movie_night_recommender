@@ -17,11 +17,10 @@ import 'features/auth/views/sign_up_screen.dart';
 import 'features/auth/views/forgot_password_screen.dart';
 import 'features/onboarding/view_models/onboarding_bloc.dart';
 import 'features/onboarding/views/onboarding_screen.dart';
-import 'features/home/views/home_screen.dart';
+import 'features/home/views/main_screen.dart';
 import 'features/movie_detail/views/movie_detail_screen.dart';
-import 'features/search/views/search_screen.dart';
 import 'features/watchlist/view_models/watchlist_bloc.dart';
-import 'features/watchlist/views/watchlist_screen.dart';
+import 'features/settings/view_models/settings_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -71,79 +70,75 @@ class MovieNightApp extends StatelessWidget {
           BlocProvider(create: (_) => AuthBloc(authRepository: authRepository)),
           BlocProvider(create: (_) => OnboardingBloc(movieRepository: movieRepository)),
           BlocProvider(create: (_) => WatchlistBloc()),
+          BlocProvider(create: (_) => SettingsBloc()),
         ],
-        child: MaterialApp(
-          title: 'Movie Night Recommender',
-          theme: AppTheme.darkTheme,
-          debugShowCheckedModeBanner: false,
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [
-            Locale('en'), // English
-            Locale('ar'), // Arabic
-          ],
-          home: const RootScreen(),
-          onGenerateRoute: (settings) {
-            switch (settings.name) {
-              case LoginScreen.routeName:
-                return PageTransition(
-                  child: const LoginScreen(),
-                  type: PageTransitionType.fade,
-                  settings: settings,
-                );
-              case SignUpScreen.routeName:
-                return PageTransition(
-                  child: const SignUpScreen(),
-                  type: PageTransitionType.rightToLeft,
-                  settings: settings,
-                );
-              case ForgotPasswordScreen.routeName:
-                return PageTransition(
-                  child: const ForgotPasswordScreen(),
-                  type: PageTransitionType.rightToLeft,
-                  settings: settings,
-                );
-              case OnboardingScreen.routeName:
-                return PageTransition(
-                  child: const OnboardingScreen(),
-                  type: PageTransitionType.fade,
-                  settings: settings,
-                );
-              case HomeScreen.routeName:
-                return PageTransition(
-                  child: const HomeScreen(),
-                  type: PageTransitionType.fade,
-                  settings: settings,
-                );
-              case '/movie-detail':
-                final args = settings.arguments as Map<String, dynamic>;
-                return PageTransition(
-                  child: MovieDetailScreen(
-                    movieId: args['movieId'] as int,
-                    heroTag: args['heroTag'] as String?,
-                  ),
-                  type: PageTransitionType.rightToLeft,
-                  settings: settings,
-                );
-              case SearchScreen.routeName:
-                return PageTransition(
-                  child: const SearchScreen(),
-                  type: PageTransitionType.fade,
-                  settings: settings,
-                );
-              case WatchlistScreen.routeName:
-                return PageTransition(
-                  child: const WatchlistScreen(),
-                  type: PageTransitionType.fade,
-                  settings: settings,
-                );
-              default:
-                return null;
-            }
+        child: BlocBuilder<SettingsBloc, SettingsState>(
+          builder: (context, settingsState) {
+            return MaterialApp(
+              title: 'Movie Night Recommender',
+              theme: AppTheme.lightTheme,
+              darkTheme: AppTheme.darkTheme,
+              themeMode: settingsState.settings.themeMode,
+              debugShowCheckedModeBanner: false,
+              locale: settingsState.settings.locale,
+              localizationsDelegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: const [
+                Locale('en'), // English
+                Locale('ar'), // Arabic
+              ],
+              home: const RootScreen(),
+              onGenerateRoute: (settings) {
+                switch (settings.name) {
+                  case LoginScreen.routeName:
+                    return PageTransition(
+                      child: const LoginScreen(),
+                      type: PageTransitionType.fade,
+                      settings: settings,
+                    );
+                  case SignUpScreen.routeName:
+                    return PageTransition(
+                      child: const SignUpScreen(),
+                      type: PageTransitionType.rightToLeft,
+                      settings: settings,
+                    );
+                  case ForgotPasswordScreen.routeName:
+                    return PageTransition(
+                      child: const ForgotPasswordScreen(),
+                      type: PageTransitionType.rightToLeft,
+                      settings: settings,
+                    );
+                  case OnboardingScreen.routeName:
+                    return PageTransition(
+                      child: const OnboardingScreen(),
+                      type: PageTransitionType.fade,
+                      settings: settings,
+                    );
+                  case MainScreen.routeName:
+                    return PageTransition(
+                      child: const MainScreen(),
+                      type: PageTransitionType.fade,
+                      settings: settings,
+                    );
+                  case '/movie-detail':
+                    final args = settings.arguments as Map<String, dynamic>;
+                    return PageTransition(
+                      child: MovieDetailScreen(
+                        movieId: args['movieId'] as int,
+                        heroTag: args['heroTag'] as String?,
+                      ),
+                      type: PageTransitionType.rightToLeft,
+                      settings: settings,
+                    );
+                  default:
+                    return null;
+                }
+              },
+            );
           },
         ),
       ),
@@ -169,6 +164,20 @@ class _RootScreenState extends State<RootScreen> {
   }
 
   Future<void> _checkLocalAuth() async {
+    final settingsBloc = context.read<SettingsBloc>();
+    // Wait for settings to be loaded if needed, but HydratedBloc usually loads synchronously on start if storage is ready.
+    // However, we should check if local auth is enabled in settings.
+    
+    final isLocalAuthEnabled = settingsBloc.state.settings.isLocalAuthEnabled;
+
+    if (!isLocalAuthEnabled) {
+      setState(() {
+        _isLocalAuthAuthenticated = true;
+        _isCheckingLocalAuth = false;
+      });
+      return;
+    }
+
     final localAuthService = context.read<LocalAuthService>();
     final isSupported = await localAuthService.isDeviceSupported();
 
@@ -221,7 +230,7 @@ class _RootScreenState extends State<RootScreen> {
         return BlocBuilder<AuthBloc, AuthState>(
           builder: (context, authState) {
             if (authState.status == AuthStatus.authenticated) {
-              return const HomeScreen();
+              return const MainScreen();
             } else {
               return const LoginScreen();
             }
