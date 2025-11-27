@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:equatable/equatable.dart';
-import '../../data/models/settings_model.dart';
+import '../data/models/settings_model.dart';
 
 part 'settings_event.dart';
 part 'settings_state.dart';

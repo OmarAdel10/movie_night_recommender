@@ -40,52 +40,62 @@ class _SearchViewState extends State<_SearchView> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     
-    return Scaffold(
-      appBar: AppBar(
-        title: TextField(
-          controller: _searchController,
-          autofocus: true,
-          decoration: InputDecoration(
-            hintText: 'Search movies...',
-            border: InputBorder.none,
-            hintStyle: TextStyle(color: Colors.grey[400]),
-          ),
-          style: theme.textTheme.titleMedium,
-          onChanged: (query) {
-            context.read<SearchBloc>().add(SearchQueryChanged(query));
-          },
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.clear),
-            onPressed: () {
-              _searchController.clear();
-              context.read<SearchBloc>().add(SearchQueryCleared());
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: TextField(
+            controller: _searchController,
+            autofocus: false,
+            decoration: InputDecoration(
+              hintText: 'Search movies...',
+              prefixIcon: const Icon(Icons.search),
+              suffixIcon: IconButton(
+                icon: const Icon(Icons.clear),
+                onPressed: () {
+                  _searchController.clear();
+                  context.read<SearchBloc>().add(SearchQueryCleared());
+                },
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide.none,
+              ),
+              filled: true,
+              fillColor: theme.colorScheme.surface,
+              hintStyle: TextStyle(color: Colors.grey[400]),
+            ),
+            style: theme.textTheme.titleMedium,
+            onChanged: (query) {
+              context.read<SearchBloc>().add(SearchQueryChanged(query));
             },
           ),
-        ],
-      ),
-      body: BlocBuilder<SearchBloc, SearchState>(
-        builder: (context, state) {
-          if (state.status == SearchStatus.initial) {
-            return _buildInitialState(context);
-          }
+        ),
+        Expanded(
+          child: BlocBuilder<SearchBloc, SearchState>(
+            builder: (context, state) {
+              if (state.status == SearchStatus.initial) {
+                return _buildInitialState(context);
+              }
 
-          if (state.status == SearchStatus.loading) {
-            return const Center(child: CircularProgressIndicator());
-          }
+              if (state.status == SearchStatus.loading) {
+                return const Center(child: CircularProgressIndicator());
+              }
 
-          if (state.status == SearchStatus.failure) {
-            return _buildError(context, state.errorMessage ?? 'Unknown error');
-          }
+              if (state.status == SearchStatus.failure) {
+                return _buildError(context, state.errorMessage ?? 'Unknown error');
+              }
 
-          if (state.results.isEmpty) {
-            return _buildNoResults(context);
-          }
+              if (state.results.isEmpty) {
+                return _buildNoResults(context);
+              }
 
-          return _buildResults(context, state.results);
-        },
-      ),
+              return _buildResults(context, state.results);
+            },
+          ),
+        ),
+        const SizedBox(height: 80), // Bottom padding for floating nav bar
+      ],
     );
   }
 

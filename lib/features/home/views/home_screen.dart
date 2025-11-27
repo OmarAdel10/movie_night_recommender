@@ -26,72 +26,59 @@ class _HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Movie Night'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              Navigator.of(context).pushNamed('/search');
-            },
-          ),
-        ],
-      ),
-      body: BlocBuilder<HomeBloc, HomeState>(
-        builder: (context, state) {
-          if (state.status == HomeStatus.loading || state.status == HomeStatus.initial) {
-            return _buildLoadingShimmer();
-          }
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (state.status == HomeStatus.loading || state.status == HomeStatus.initial) {
+          return _buildLoadingShimmer();
+        }
 
-          if (state.status == HomeStatus.failure) {
-            return _buildError(context, state.errorMessage ?? 'Unknown error');
-          }
+        if (state.status == HomeStatus.failure) {
+          return _buildError(context, state.errorMessage ?? 'Unknown error');
+        }
 
-          return RefreshIndicator(
-            onRefresh: () async {
-              context.read<HomeBloc>().add(HomeRefreshMovies());
-              await Future.delayed(const Duration(seconds: 1));
-            },
-            child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 16),
-                  
-                  // Trending Movies
-                  if (state.trendingMovies.isNotEmpty)
-                    MovieCarousel(
-                      title: 'Trending Now',
-                      movies: state.trendingMovies,
-                    ),
-                  
-                  const SizedBox(height: 24),
-                  
-                  // Popular Movies
-                  if (state.popularMovies.isNotEmpty)
-                    MovieCarousel(
-                      title: 'Popular',
-                      movies: state.popularMovies,
-                    ),
-                  
-                  const SizedBox(height: 24),
-                  
-                  // Top Rated Movies
-                  if (state.topRatedMovies.isNotEmpty)
-                    MovieCarousel(
-                      title: 'Top Rated',
-                      movies: state.topRatedMovies,
-                    ),
-                  
-                  const SizedBox(height: 24),
-                ],
-              ),
+        return RefreshIndicator(
+          onRefresh: () async {
+            context.read<HomeBloc>().add(HomeRefreshMovies());
+            await Future.delayed(const Duration(seconds: 1));
+          },
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 16),
+                
+                // Trending Movies
+                if (state.trendingMovies.isNotEmpty)
+                  MovieCarousel(
+                    title: 'Trending Now',
+                    movies: state.trendingMovies,
+                  ),
+                
+                const SizedBox(height: 24),
+                
+                // Popular Movies
+                if (state.popularMovies.isNotEmpty)
+                  MovieCarousel(
+                    title: 'Popular',
+                    movies: state.popularMovies,
+                  ),
+                
+                const SizedBox(height: 24),
+                
+                // Top Rated Movies
+                if (state.topRatedMovies.isNotEmpty)
+                  MovieCarousel(
+                    title: 'Top Rated',
+                    movies: state.topRatedMovies,
+                  ),
+                
+                const SizedBox(height: 80), // Bottom padding for floating nav bar
+              ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
