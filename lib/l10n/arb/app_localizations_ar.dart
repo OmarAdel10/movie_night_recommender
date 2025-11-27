@@ -15,10 +15,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get homeTitle => 'اكتشف';
 
   @override
-  String get trending => 'شائع';
+  String get trending => 'الرائج';
 
   @override
-  String get popular => 'الأكثر شعبية';
+  String get popular => 'الشائع';
 
   @override
   String get topRated => 'الأعلى تقييماً';
@@ -52,4 +52,55 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get signInWithApple => 'تسجيل الدخول باستخدام Apple';
+
+  @override
+  String get profile => 'الملف الشخصي';
+
+  @override
+  String get username => 'اسم المستخدم';
+
+  @override
+  String get editProfile => 'تعديل الملف الشخصي';
+
+  @override
+  String get language => 'اللغة';
+
+  @override
+  String get theme => 'المظهر';
+
+  @override
+  String get lightTheme => 'فاتح';
+
+  @override
+  String get darkTheme => 'داكن';
+
+  @override
+  String get systemTheme => 'مظهر النظام';
+
+  @override
+  String get security => 'الأمان';
+
+  @override
+  String get biometricAuth => 'المصادقة البيومترية';
+
+  @override
+  String get enableBiometrics => 'تفعيل المصادقة البيومترية';
+
+  @override
+  String get about => 'حول التطبيق';
+
+  @override
+  String get version => 'الإصدار';
+
+  @override
+  String get contactDeveloper => 'تواصل مع المطور';
+
+  @override
+  String get emailDeveloper => 'راسل المطور';
+
+  @override
+  String get linkedInProfile => 'ملف LinkedIn';
+
+  @override
+  String get logout => 'تسجيل الخروج';
 }

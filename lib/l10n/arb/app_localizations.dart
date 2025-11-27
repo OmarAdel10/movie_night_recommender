@@ -187,6 +187,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign in with Apple'**
   String get signInWithApple;
+
+  /// No description provided for @profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
+
+  /// No description provided for @username.
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get username;
+
+  /// No description provided for @editProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get editProfile;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get theme;
+
+  /// No description provided for @lightTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Light Theme'**
+  String get lightTheme;
+
+  /// No description provided for @darkTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark Theme'**
+  String get darkTheme;
+
+  /// No description provided for @systemTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'System Theme'**
+  String get systemTheme;
+
+  /// No description provided for @security.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get security;
+
+  /// No description provided for @biometricAuth.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometric Authentication'**
+  String get biometricAuth;
+
+  /// No description provided for @enableBiometrics.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Biometric Authentication'**
+  String get enableBiometrics;
+
+  /// No description provided for @about.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get about;
+
+  /// No description provided for @version.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get version;
+
+  /// No description provided for @contactDeveloper.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Developer'**
+  String get contactDeveloper;
+
+  /// No description provided for @emailDeveloper.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Developer'**
+  String get emailDeveloper;
+
+  /// No description provided for @linkedInProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'LinkedIn Profile'**
+  String get linkedInProfile;
+
+  /// No description provided for @logout.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get logout;
 }
 
 class _AppLocalizationsDelegate
