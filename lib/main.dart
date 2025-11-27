@@ -21,7 +21,6 @@ import 'features/home/views/main_screen.dart';
 import 'features/movie_detail/views/movie_detail_screen.dart';
 import 'features/watchlist/view_models/watchlist_bloc.dart';
 import 'features/settings/view_models/settings_bloc.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // TODO: Add google-services.json (Android) and GoogleService-Info.plist (iOS)
