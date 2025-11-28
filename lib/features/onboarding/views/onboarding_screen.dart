@@ -214,6 +214,9 @@ class _OnboardingViewState extends State<_OnboardingView> {
                   return FilterChip(
                     label: Text(genre.name),
                     selected: isSelected,
+                    labelStyle: TextStyle(
+                      color: isSelected ? theme.primaryColor : Colors.white,
+                    ),
                     onSelected: (selected) {
                       if (selected) {
                         context.read<OnboardingBloc>().add(OnboardingGenreSelected(genre));

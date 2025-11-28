@@ -51,17 +51,19 @@ class _MainScreenState extends State<MainScreen> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(24),
           child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+            filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
             child: Container(
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface.withOpacity(0.8),
+                color: Theme.of(context).colorScheme.surface.withOpacity(0.7),
                 borderRadius: BorderRadius.circular(24),
                 border: Border.all(
-                  color: Colors.white.withOpacity(0.1),
-                  width: 1,
+                  color: Colors.white.withOpacity(0.2),
+                  width: 1.5,
                 ),
               ),
-              child: BottomNavigationBar(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: BottomNavigationBar(
                 currentIndex: _currentIndex,
                 onTap: (index) {
                   setState(() {
@@ -75,6 +77,7 @@ class _MainScreenState extends State<MainScreen> {
                 unselectedItemColor: Colors.grey,
                 showSelectedLabels: false,
                 showUnselectedLabels: false,
+                iconSize: 28,
                 items: [
                   BottomNavigationBarItem(
                     icon: const Icon(Icons.home_outlined),
@@ -97,6 +100,7 @@ class _MainScreenState extends State<MainScreen> {
                     label: l10n.settings,
                   ),
                 ],
+              ),
               ),
             ),
           ),

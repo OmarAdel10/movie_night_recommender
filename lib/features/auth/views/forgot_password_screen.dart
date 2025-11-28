@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_night_recommender/l10n/arb/app_localizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../view_models/auth_bloc.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   static const String routeName = '/forgot_password';
@@ -74,9 +76,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      // TODO: Implement reset password logic via Bloc
+                      // Dispatch reset password request via AuthBloc
+                      context.read<AuthBloc>().add(
+                            AuthResetPasswordRequested(_emailController.text),
+                          );
+
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Password reset email sent')),
+                        SnackBar(content: Text('If the email exists, a reset link was sent')),
                       );
                       Navigator.pop(context);
                     }

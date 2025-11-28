@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_night_recommender/l10n/arb/app_localizations.dart';
 import '../view_models/auth_bloc.dart';
+import 'widgets/password_text_field.dart';
 import 'sign_up_screen.dart';
 import 'forgot_password_screen.dart';
 
@@ -88,16 +89,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 16),
                       // Password
-                      TextFormField(
+                      PasswordTextField(
                         controller: _passwordController,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          labelText: l10n.password,
-                          prefixIcon: const Icon(Icons.lock_outline),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
+                        labelText: l10n.password,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter your password';
@@ -145,20 +139,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                         icon: const Icon(Icons.g_mobiledata, size: 28),
                         label: Text(l10n.signInWithGoogle),
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      OutlinedButton.icon(
-                        onPressed: () {
-                          context.read<AuthBloc>().add(AuthAppleSignInRequested());
-                        },
-                        icon: const Icon(Icons.apple, size: 28),
-                        label: Text(l10n.signInWithApple),
                         style: OutlinedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           shape: RoundedRectangleBorder(

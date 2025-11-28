@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:movie_night_recommender/l10n/arb/app_localizations.dart';
 import '../view_models/settings_bloc.dart';
 import '../../auth/view_models/auth_bloc.dart';
+import '../../auth/views/login_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -12,24 +13,31 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildProfileSection(context, l10n),
-          const SizedBox(height: 24),
-          _buildLanguageSection(context, l10n),
-          const SizedBox(height: 24),
-          _buildThemeSection(context, l10n),
-          const SizedBox(height: 24),
-          _buildSecuritySection(context, l10n),
-          const SizedBox(height: 24),
-          _buildAboutSection(context, l10n),
-          const SizedBox(height: 24),
-          _buildLogoutButton(context, l10n),
-          const SizedBox(height: 80), // Bottom padding for floating nav bar
-        ],
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state.status == AuthStatus.unauthenticated) {
+          Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+        }
+      },
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildProfileSection(context, l10n),
+            const SizedBox(height: 24),
+            _buildLanguageSection(context, l10n),
+            const SizedBox(height: 24),
+            _buildThemeSection(context, l10n),
+            const SizedBox(height: 24),
+            _buildSecuritySection(context, l10n),
+            const SizedBox(height: 24),
+            _buildAboutSection(context, l10n),
+            const SizedBox(height: 24),
+            _buildLogoutButton(context, l10n),
+            const SizedBox(height: 80), // Bottom padding for floating nav bar
+          ],
+        ),
       ),
     );
   }

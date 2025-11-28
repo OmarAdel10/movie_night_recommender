@@ -43,7 +43,7 @@ class MovieCarousel extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         SizedBox(
-          height: 200,
+          height: 280,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -80,7 +80,7 @@ class _MovieCard extends StatelessWidget {
     final theme = Theme.of(context);
     
     return Container(
-      width: 130,
+      width: 160,
       margin: const EdgeInsets.symmetric(horizontal: 4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,7 +119,7 @@ class _MovieCard extends StatelessWidget {
             movie.title,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: theme.textTheme.bodySmall?.copyWith(
+            style: theme.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w600,
             ),
           ),

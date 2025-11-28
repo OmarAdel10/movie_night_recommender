@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
@@ -155,18 +156,27 @@ class RootScreen extends StatefulWidget {
 class _RootScreenState extends State<RootScreen> {
   bool _isLocalAuthAuthenticated = false;
   bool _isCheckingLocalAuth = true;
+  StreamSubscription? _settingsSubscription;
 
   @override
   void initState() {
     super.initState();
-    _checkLocalAuth();
+    // Delay checking until after the first frame so inherited providers are available
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkLocalAuth();
+
+      // Subscribe to settings changes so if local auth is enabled later we prompt the user
+      final settingsBloc = context.read<SettingsBloc>();
+      _settingsSubscription = settingsBloc.stream.listen((state) {
+        if (state.settings.isLocalAuthEnabled && !_isLocalAuthAuthenticated) {
+          _checkLocalAuth();
+        }
+      });
+    });
   }
 
   Future<void> _checkLocalAuth() async {
     final settingsBloc = context.read<SettingsBloc>();
-    // Wait for settings to be loaded if needed, but HydratedBloc usually loads synchronously on start if storage is ready.
-    // However, we should check if local auth is enabled in settings.
-    
     final isLocalAuthEnabled = settingsBloc.state.settings.isLocalAuthEnabled;
 
     if (!isLocalAuthEnabled) {
@@ -181,17 +191,31 @@ class _RootScreenState extends State<RootScreen> {
     final isSupported = await localAuthService.isDeviceSupported();
 
     if (isSupported) {
-      final authenticated = await localAuthService.authenticate();
-      setState(() {
-        _isLocalAuthAuthenticated = authenticated;
-        _isCheckingLocalAuth = false;
-      });
+      try {
+        final authenticated = await localAuthService.authenticate();
+        setState(() {
+          _isLocalAuthAuthenticated = authenticated;
+          _isCheckingLocalAuth = false;
+        });
+      } catch (_) {
+        // If biometric fails or throws, allow access but mark checking complete
+        setState(() {
+          _isLocalAuthAuthenticated = true;
+          _isCheckingLocalAuth = false;
+        });
+      }
     } else {
       setState(() {
         _isLocalAuthAuthenticated = true; // Skip if not supported
         _isCheckingLocalAuth = false;
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _settingsSubscription?.cancel();
+    super.dispose();
   }
 
   @override

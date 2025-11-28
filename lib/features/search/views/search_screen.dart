@@ -50,13 +50,16 @@ class _SearchViewState extends State<_SearchView> {
             decoration: InputDecoration(
               hintText: 'Search movies...',
               prefixIcon: const Icon(Icons.search),
-              suffixIcon: IconButton(
-                icon: const Icon(Icons.clear),
-                onPressed: () {
-                  _searchController.clear();
-                  context.read<SearchBloc>().add(SearchQueryCleared());
-                },
-              ),
+              suffixIcon: _searchController.text.isNotEmpty
+                  ? IconButton(
+                      icon: const Icon(Icons.clear),
+                      onPressed: () {
+                        _searchController.clear();
+                        context.read<SearchBloc>().add(SearchQueryCleared());
+                        setState(() {}); // Rebuild to hide clear button
+                      },
+                    )
+                  : null,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide.none,
@@ -68,6 +71,7 @@ class _SearchViewState extends State<_SearchView> {
             style: theme.textTheme.titleMedium,
             onChanged: (query) {
               context.read<SearchBloc>().add(SearchQueryChanged(query));
+              setState(() {}); // Update clear button visibility
             },
           ),
         ),

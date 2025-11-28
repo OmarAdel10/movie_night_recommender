@@ -38,7 +38,8 @@ void main() {
       final mockUserCredential = MockUserCredential();
 
       when(() => (mockGoogleSignIn as dynamic).signIn()).thenAnswer((_) async => mockAccount);
-      when(() => (mockAccount as dynamic).authentication).thenReturn(mockAuth);
+      // `authentication` is a Future getter, so return a Future that completes with mockAuth
+      when(() => (mockAccount as dynamic).authentication).thenAnswer((_) async => mockAuth);
       when(() => (mockAuth as dynamic).idToken).thenReturn('test-id');
       when(() => (mockAuth as dynamic).accessToken).thenReturn('test-access');
 
