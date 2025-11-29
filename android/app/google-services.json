@@ -12,7 +12,20 @@
           "package_name": "com.example.movie_night_recommender"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "786692485904-g76m08kmr3uqph9su8vcjq0fcl5sjgvs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.movie_night_recommender",
+            "certificate_hash": "3470384eed468a7eb8438240735a7ae71f6870fa"
+          }
+        },
+        {
+          "client_id": "786692485904-k3a1o1cl2833nse057ush4b4godaqbu3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCJKWOjAoQV64ZJQbufc8mHfWLvebhoXjI"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "786692485904-k3a1o1cl2833nse057ush4b4godaqbu3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

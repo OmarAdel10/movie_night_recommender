@@ -35,7 +35,7 @@ class SettingsScreen extends StatelessWidget {
             _buildAboutSection(context, l10n),
             const SizedBox(height: 24),
             _buildLogoutButton(context, l10n),
-            const SizedBox(height: 80), // Bottom padding for floating nav bar
+            SizedBox(height: MediaQuery.sizeOf(context).height * 0.15), // Bottom padding for floating nav bar
           ],
         ),
       ),
@@ -95,18 +95,11 @@ class SettingsScreen extends StatelessWidget {
                         Text(
                           email,
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                               ),
                         ),
                       ],
                     ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () {
-                      // TODO: Implement edit profile
-                    },
-                    tooltip: l10n.editProfile,
                   ),
                 ],
               ),

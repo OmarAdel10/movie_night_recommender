@@ -56,7 +56,7 @@ class MovieCarousel extends StatelessWidget {
                     '/movie-detail',
                     arguments: {
                       'movieId': movie.id,
-                      'heroTag': 'movie-${movie.id}',
+                      // 'heroTag': movie.id,
                     },
                   );
                 },
@@ -86,32 +86,29 @@ class _MovieCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: Hero(
-              tag: 'movie-${movie.id}',
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: movie.posterPath.isNotEmpty
-                    ? CachedNetworkImage(
-                        imageUrl: 'https://image.tmdb.org/t/p/w500${movie.posterPath}',
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        placeholder: (context, url) => Shimmer.fromColors(
-                          baseColor: Colors.grey[900]!,
-                          highlightColor: Colors.grey[800]!,
-                          child: Container(
-                            color: Colors.grey[900],
-                          ),
-                        ),
-                        errorWidget: (context, url, error) => Container(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: movie.posterPath.isNotEmpty
+                  ? CachedNetworkImage(
+                      imageUrl: 'https://image.tmdb.org/t/p/w500${movie.posterPath}',
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      placeholder: (context, url) => Shimmer.fromColors(
+                        baseColor: Colors.grey[900]!,
+                        highlightColor: Colors.grey[800]!,
+                        child: Container(
                           color: Colors.grey[900],
-                          child: const Icon(Icons.error),
                         ),
-                      )
-                    : Container(
-                        color: Colors.grey[900],
-                        child: const Icon(Icons.movie),
                       ),
-              ),
+                      errorWidget: (context, url, error) => Container(
+                        color: Colors.grey[900],
+                        child: const Icon(Icons.error),
+                      ),
+                    )
+                  : Container(
+                      color: Colors.grey[900],
+                      child: const Icon(Icons.movie),
+                    ),
             ),
           ),
           const SizedBox(height: 8),

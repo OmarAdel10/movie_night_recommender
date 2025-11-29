@@ -10,12 +10,12 @@ import '../view_models/movie_detail_bloc.dart';
 class MovieDetailScreen extends StatelessWidget {
   static const String routeName = '/movie-detail';
   final int movieId;
-  final String? heroTag;
+  // final String? heroTag;
 
   const MovieDetailScreen({
     super.key,
     required this.movieId,
-    this.heroTag,
+    // this.heroTag,
   });
 
   @override
@@ -24,15 +24,15 @@ class MovieDetailScreen extends StatelessWidget {
       create: (context) => MovieDetailBloc(
         movieRepository: context.read<MovieRepository>(),
       )..add(MovieDetailLoadRequested(movieId)),
-      child: _MovieDetailView(heroTag: heroTag),
+      child: _MovieDetailView(),
     );
   }
 }
 
 class _MovieDetailView extends StatelessWidget {
-  final String? heroTag;
+  // final String? heroTag;
 
-  const _MovieDetailView({this.heroTag});
+  const _MovieDetailView();
 
   @override
   Widget build(BuildContext context) {
@@ -142,16 +142,13 @@ class _MovieDetailView extends StatelessWidget {
                   children: [
                     // Poster with Hero animation
                     if (movie.posterPath.isNotEmpty)
-                      Hero(
-                        tag: heroTag ?? 'movie-${movie.id}',
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: CachedNetworkImage(
-                            imageUrl: 'https://image.tmdb.org/t/p/w500${movie.posterPath}',
-                            width: 120,
-                            height: 180,
-                            fit: BoxFit.cover,
-                          ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: CachedNetworkImage(
+                          imageUrl: 'https://image.tmdb.org/t/p/w500${movie.posterPath}',
+                          width: 120,
+                          height: 180,
+                          fit: BoxFit.cover,
                         ),
                       ),
                     const SizedBox(width: 16),

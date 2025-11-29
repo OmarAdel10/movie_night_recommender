@@ -31,38 +31,45 @@ class _MainScreenState extends State<MainScreen> {
 
     return Scaffold(
       extendBody: true,
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
-      ),
-      bottomNavigationBar: Container(
-        margin: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(24),
-          color: Colors.transparent,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.3),
-              blurRadius: 20,
-              offset: const Offset(0, 10),
-            ),
-          ],
+      body: SafeArea(
+        bottom: false,
+        child: IndexedStack(
+          index: _currentIndex,
+          children: _screens,
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(24),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface.withOpacity(0.7),
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(
-                  color: Colors.white.withOpacity(0.2),
-                  width: 1.5,
-                ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        padding: EdgeInsets.zero,
+        height: MediaQuery.sizeOf(context).height * 0.12,
+        child: Container(
+          margin: const EdgeInsets.all(13),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(24),
+            color: Colors.transparent,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.3),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
               ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(24),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.7),
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.2),
+                    width: 1.5,
+                  ),
+                ),
                 child: BottomNavigationBar(
                 currentIndex: _currentIndex,
                 onTap: (index) {
@@ -74,10 +81,10 @@ class _MainScreenState extends State<MainScreen> {
                 elevation: 0,
                 type: BottomNavigationBarType.fixed,
                 selectedItemColor: Theme.of(context).primaryColor,
-                unselectedItemColor: Colors.grey,
+                unselectedItemColor: Colors.grey.shade700,
                 showSelectedLabels: false,
                 showUnselectedLabels: false,
-                iconSize: 28,
+                iconSize: 30,
                 items: [
                   BottomNavigationBarItem(
                     icon: const Icon(Icons.home_outlined),
@@ -100,7 +107,7 @@ class _MainScreenState extends State<MainScreen> {
                     label: l10n.settings,
                   ),
                 ],
-              ),
+                              ),
               ),
             ),
           ),
