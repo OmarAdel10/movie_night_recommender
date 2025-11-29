@@ -129,7 +129,7 @@ class MovieNightApp extends StatelessWidget {
                     return PageTransition(
                       child: MovieDetailScreen(
                         movieId: args['movieId'] as int,
-                        heroTag: args['heroTag'] as String?,
+                        // heroTag: args['heroTag'] as String?,
                       ),
                       type: PageTransitionType.rightToLeft,
                       settings: settings,
