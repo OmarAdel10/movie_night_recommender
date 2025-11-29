@@ -27,4 +27,5 @@
     </intent>
   </queries>
   <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.CLEAR_APP_USER_DATA"/>
 </manifest>

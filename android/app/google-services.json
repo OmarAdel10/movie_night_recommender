@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:786692485904:android:1f4e4ce28cc8c30ee7ab95",
         "android_client_info": {
-          "package_name": "com.example.movie_night_recommender"
+          "package_name": "com.example.movie_night_recommender_v2"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "786692485904-g76m08kmr3uqph9su8vcjq0fcl5sjgvs.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.movie_night_recommender",
+            "package_name": "com.example.movie_night_recommender_v2",
             "certificate_hash": "3470384eed468a7eb8438240735a7ae71f6870fa"
           }
         },
