@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:movie_night_recommender/initial_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,27 +23,28 @@ import 'features/home/views/main_screen.dart';
 import 'features/movie_detail/views/movie_detail_screen.dart';
 import 'features/watchlist/view_models/watchlist_bloc.dart';
 import 'features/settings/view_models/settings_bloc.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // TODO: Add google-services.json (Android) and GoogleService-Info.plist (iOS)
-  // or run `flutterfire configure` to generate firebase_options.dart
-  await Firebase.initializeApp(); 
-  
+  await Firebase.initializeApp();
+
   HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory: kIsWeb
-        ? HydratedStorageDirectory.web
-        : HydratedStorageDirectory((await getApplicationDocumentsDirectory()).path),
+    storageDirectory: HydratedStorageDirectory(
+      (await getApplicationDocumentsDirectory()).path,
+    ),
   );
 
-  final authRepository = AuthRepository();
-  final movieRepository = MovieRepository();
-  final localAuthService = LocalAuthService();
+  final AuthRepository authRepository = AuthRepository();
+  final MovieRepository movieRepository = MovieRepository();
+  final LocalAuthService localAuthService = LocalAuthService();
 
-  runApp(MovieNightApp(
-    authRepository: authRepository,
-    movieRepository: movieRepository,
-    localAuthService: localAuthService,
-  ));
+  runApp(
+    MovieNightApp(
+      authRepository: authRepository,
+      movieRepository: movieRepository,
+      localAuthService: localAuthService,
+    ),
+  );
 }
 
 class MovieNightApp extends StatelessWidget {
@@ -68,7 +70,9 @@ class MovieNightApp extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => AuthBloc(authRepository: authRepository)),
-          BlocProvider(create: (_) => OnboardingBloc(movieRepository: movieRepository)),
+          BlocProvider(
+            create: (_) => OnboardingBloc(movieRepository: movieRepository),
+          ),
           BlocProvider(create: (_) => WatchlistBloc()),
           BlocProvider(create: (_) => SettingsBloc()),
         ],
@@ -91,7 +95,8 @@ class MovieNightApp extends StatelessWidget {
                 Locale('en'), // English
                 Locale('ar'), // Arabic
               ],
-              home: const RootScreen(),
+              // home: const RootScreen(),
+              initialRoute: InitialScreen.routeName,
               onGenerateRoute: (settings) {
                 switch (settings.name) {
                   case LoginScreen.routeName:
@@ -124,7 +129,7 @@ class MovieNightApp extends StatelessWidget {
                       type: PageTransitionType.fade,
                       settings: settings,
                     );
-                  case '/movie-detail':
+                  case MovieDetailScreen.routeName:
                     final args = settings.arguments as Map<String, dynamic>;
                     return PageTransition(
                       child: MovieDetailScreen(
@@ -132,6 +137,12 @@ class MovieNightApp extends StatelessWidget {
                         // heroTag: args['heroTag'] as String?,
                       ),
                       type: PageTransitionType.rightToLeft,
+                      settings: settings,
+                    );
+                  case InitialScreen.routeName:
+                    return PageTransition(
+                      child: const InitialScreen(),
+                      type: PageTransitionType.fade,
                       settings: settings,
                     );
                   default:
@@ -221,9 +232,7 @@ class _RootScreenState extends State<RootScreen> {
   @override
   Widget build(BuildContext context) {
     if (_isCheckingLocalAuth) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     if (!_isLocalAuthAuthenticated) {

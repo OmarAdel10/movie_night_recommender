@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter/services.dart';
 
@@ -8,6 +10,7 @@ class LocalAuthService {
     try {
       return await _auth.isDeviceSupported();
     } catch (e) {
+      log('Error checking device support: $e');
       return false;
     }
   }
@@ -15,10 +18,12 @@ class LocalAuthService {
   Future<bool> authenticate() async {
     try {
       final isSupported = await isDeviceSupported();
-      if (!isSupported) return true; // Allow access if not supported (or handle differently based on requirements)
+      if (!isSupported)
+        return true; // Allow access if not supported (or handle differently based on requirements)
 
       final canCheckBiometrics = await _auth.canCheckBiometrics;
-      if (!canCheckBiometrics) return true; // Allow access if no biometrics enrolled
+      if (!canCheckBiometrics)
+        return true; // Allow access if no biometrics enrolled
       // Try to authenticate. Some Android embedder configurations
       // (e.g. when the activity is not a FragmentActivity) will throw a
       // LocalAuthException with a UI-unavailable error. Catch that and
