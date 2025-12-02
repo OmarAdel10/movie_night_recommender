@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_night_recommender/l10n/arb/app_localizations.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../data/repositories/movie_repository.dart';
 import '../view_models/home_bloc.dart';
@@ -26,6 +27,8 @@ class _HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (state.status == HomeStatus.loading || state.status == HomeStatus.initial) {
@@ -51,7 +54,7 @@ class _HomeView extends StatelessWidget {
                 // Trending Movies
                 if (state.trendingMovies.isNotEmpty)
                   MovieCarousel(
-                    title: 'Trending Now',
+                    title: l10n.trendingNow,
                     movies: state.trendingMovies,
                   ),
                 
@@ -60,7 +63,7 @@ class _HomeView extends StatelessWidget {
                 // Popular Movies
                 if (state.popularMovies.isNotEmpty)
                   MovieCarousel(
-                    title: 'Popular',
+                    title: l10n.popular,
                     movies: state.popularMovies,
                   ),
                 
@@ -69,11 +72,11 @@ class _HomeView extends StatelessWidget {
                 // Top Rated Movies
                 if (state.topRatedMovies.isNotEmpty)
                   MovieCarousel(
-                    title: 'Top Rated',
+                    title: l10n.topRated,
                     movies: state.topRatedMovies,
                   ),
                 
-                const SizedBox(height: 80), // Bottom padding for floating nav bar
+                SizedBox(height: MediaQuery.sizeOf(context).height * 0.15), // Bottom padding for floating nav bar
               ],
             ),
           ),
@@ -167,6 +170,8 @@ class _HomeView extends StatelessWidget {
   }
 
   Widget _buildError(BuildContext context, String message) {
+        final l10n = AppLocalizations.of(context)!;
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -180,7 +185,7 @@ class _HomeView extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'Oops! Something went wrong',
+              l10n.oopsSomethingWentWrong,
               style: Theme.of(context).textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
@@ -195,7 +200,7 @@ class _HomeView extends StatelessWidget {
               onPressed: () {
                 context.read<HomeBloc>().add(HomeLoadMovies());
               },
-              child: const Text('Try Again'),
+              child: Text(l10n.tryAgain),
             ),
           ],
         ),

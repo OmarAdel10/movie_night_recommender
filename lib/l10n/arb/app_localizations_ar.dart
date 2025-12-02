@@ -15,7 +15,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get homeTitle => 'اكتشف';
 
   @override
-  String get trending => 'الرائج';
+  String get trendingNow => 'الرائج الآن';
 
   @override
   String get popular => 'الشائع';
@@ -27,7 +27,35 @@ class AppLocalizationsAr extends AppLocalizations {
   String get search => 'بحث';
 
   @override
+  String get searchMovies => 'بحث في الأفلام...';
+
+  @override
+  String get searchForMovies => 'بحث في الأفلام';
+
+  @override
+  String get enterMovieTitle => 'أدخل عنوان الفيلم للبدء';
+
+  @override
+  String get noResultsFound => 'لا نتائج';
+
+  @override
+  String get tryDifferentKeywords => 'حاول استخدام كلمات مختلفة';
+
+  @override
+  String get searchFailed => 'فشل البحث';
+
+  @override
+  String get unknownError => 'خطأ غير معروف';
+
+  @override
   String get watchlist => 'قائمة المشاهدة';
+
+  @override
+  String get yourWatchlistIsEmpty => 'قائمة المشاهدة فارغة';
+
+  @override
+  String get addMoviesToYourWatchlistToSeeThemHere =>
+      'أضف الأفلام إلى قائمة المشاهدة لرؤيتها هنا';
 
   @override
   String get settings => 'الإعدادات';
@@ -94,4 +122,25 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get logout => 'تسجيل الخروج';
+
+  @override
+  String get oopsSomethingWentWrong => 'عذرًا! حدث خطأ ما';
+
+  @override
+  String get tryAgain => 'حاول مرة أخرى';
+
+  @override
+  String get min => 'دقيقة';
+
+  @override
+  String get overview => 'الوصف';
+
+  @override
+  String get cast => 'طاقم التمثيل';
+
+  @override
+  String get failedToLoadMovieDetails => 'فشل في تحميل تفاصيل الفيلم';
+
+  @override
+  String get goBack => 'العودة';
 }

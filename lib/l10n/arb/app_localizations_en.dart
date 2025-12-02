@@ -15,7 +15,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeTitle => 'Discover';
 
   @override
-  String get trending => 'Trending';
+  String get trendingNow => 'Trending Now';
 
   @override
   String get popular => 'Popular';
@@ -27,7 +27,35 @@ class AppLocalizationsEn extends AppLocalizations {
   String get search => 'Search';
 
   @override
+  String get searchMovies => 'Search movies...';
+
+  @override
+  String get searchForMovies => 'Search for movies';
+
+  @override
+  String get enterMovieTitle => 'Enter a movie title to start';
+
+  @override
+  String get noResultsFound => 'No results found';
+
+  @override
+  String get tryDifferentKeywords => 'Try different keywords';
+
+  @override
+  String get searchFailed => 'Search failed';
+
+  @override
+  String get unknownError => 'Unknown error';
+
+  @override
   String get watchlist => 'Watchlist';
+
+  @override
+  String get yourWatchlistIsEmpty => 'Your watchlist is empty';
+
+  @override
+  String get addMoviesToYourWatchlistToSeeThemHere =>
+      'Add movies to your watchlist to see them here';
 
   @override
   String get settings => 'Settings';
@@ -94,4 +122,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get logout => 'Logout';
+
+  @override
+  String get oopsSomethingWentWrong => 'Oops! Something went wrong';
+
+  @override
+  String get tryAgain => 'Try Again';
+
+  @override
+  String get min => 'Min';
+
+  @override
+  String get overview => 'Overview';
+
+  @override
+  String get cast => 'Cast';
+
+  @override
+  String get failedToLoadMovieDetails => 'Failed to load movie details';
+
+  @override
+  String get goBack => 'Go Back';
 }
