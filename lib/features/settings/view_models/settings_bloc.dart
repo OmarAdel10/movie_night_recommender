@@ -10,7 +10,6 @@ class SettingsBloc extends HydratedBloc<SettingsEvent, SettingsState> {
   SettingsBloc() : super(const SettingsState()) {
     on<SettingsThemeChanged>(_onThemeChanged);
     on<SettingsLocaleChanged>(_onLocaleChanged);
-    on<SettingsLocalAuthChanged>(_onLocalAuthChanged);
   }
 
   void _onThemeChanged(SettingsThemeChanged event, Emitter<SettingsState> emit) {
@@ -22,12 +21,6 @@ class SettingsBloc extends HydratedBloc<SettingsEvent, SettingsState> {
   void _onLocaleChanged(SettingsLocaleChanged event, Emitter<SettingsState> emit) {
     emit(state.copyWith(
       settings: state.settings.copyWith(locale: event.locale),
-    ));
-  }
-
-  void _onLocalAuthChanged(SettingsLocalAuthChanged event, Emitter<SettingsState> emit) {
-    emit(state.copyWith(
-      settings: state.settings.copyWith(isLocalAuthEnabled: event.isEnabled),
     ));
   }
 

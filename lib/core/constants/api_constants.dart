@@ -3,6 +3,5 @@ class ApiConstants {
   static const String imageBaseUrl = 'https://image.tmdb.org/t/p/w500';
   static const String imageOriginalUrl = 'https://image.tmdb.org/t/p/original';
   
-  // TODO: Replace with user's API key or inject via environment variables
   static const String apiKey = '69c074466225abf9aa450197fd8eb619'; 
 }

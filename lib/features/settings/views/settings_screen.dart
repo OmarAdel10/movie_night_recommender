@@ -30,12 +30,10 @@ class SettingsScreen extends StatelessWidget {
             const SizedBox(height: 24),
             _buildThemeSection(context, l10n),
             const SizedBox(height: 24),
-            _buildSecuritySection(context, l10n),
-            const SizedBox(height: 24),
             _buildAboutSection(context, l10n),
             const SizedBox(height: 24),
             _buildLogoutButton(context, l10n),
-            SizedBox(height: MediaQuery.sizeOf(context).height * 0.15), // Bottom padding for floating nav bar
+            SizedBox(height: MediaQuery.sizeOf(context).height * 0.15),
           ],
         ),
       ),
@@ -206,32 +204,7 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSecuritySection(BuildContext context, AppLocalizations l10n) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildSectionTitle(context, l10n.security),
-        BlocBuilder<SettingsBloc, SettingsState>(
-          builder: (context, state) {
-            return Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: SwitchListTile(
-                title: Text(l10n.biometricAuth),
-                subtitle: Text(l10n.enableBiometrics),
-                value: state.settings.isLocalAuthEnabled,
-                onChanged: (value) {
-                  context.read<SettingsBloc>().add(SettingsLocalAuthChanged(value));
-                },
-              ),
-            );
-          },
-        ),
-      ],
-    );
-  }
+
 
   Widget _buildAboutSection(BuildContext context, AppLocalizations l10n) {
     return Column(

@@ -12,8 +12,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   StreamSubscription<User?>? _userSubscription;
 
   AuthBloc({required AuthRepository authRepository})
-      : _authRepository = authRepository,
-        super(const AuthState.unknown()) {
+    : _authRepository = authRepository,
+      super(const AuthState.unknown()) {
     on<AuthCheckRequested>(_onAuthCheckRequested);
     on<AuthLoginRequested>(_onAuthLoginRequested);
     on<AuthSignUpRequested>(_onAuthSignUpRequested);
@@ -45,6 +45,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(const AuthState.loading());
     try {
       await _authRepository.logIn(email: event.email, password: event.password);
+      emit(AuthState.authenticated(_authRepository.currentUser!));
     } catch (e) {
       emit(AuthState.unauthenticated(errorMessage: e.toString()));
     }
@@ -65,6 +66,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await userCredential.user?.updateDisplayName(event.username);
         await userCredential.user?.reload();
       }
+
+      emit(AuthState.authenticated(_authRepository.currentUser!));
     } catch (e) {
       emit(AuthState.unauthenticated(errorMessage: e.toString()));
     }
@@ -77,6 +80,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(const AuthState.loading());
     try {
       await _authRepository.signInWithGoogle();
+      emit(AuthState.authenticated(_authRepository.currentUser!));
     } catch (e) {
       emit(AuthState.unauthenticated(errorMessage: e.toString()));
     }

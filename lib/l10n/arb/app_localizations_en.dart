@@ -78,15 +78,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get systemTheme => 'System Theme';
 
   @override
-  String get security => 'Security';
-
-  @override
-  String get biometricAuth => 'Biometric Authentication';
-
-  @override
-  String get enableBiometrics => 'Enable Biometric Authentication';
-
-  @override
   String get about => 'About';
 
   @override

@@ -23,9 +23,7 @@
     "lightTheme": "Light Theme",
     "darkTheme": "Dark Theme",
     "systemTheme": "System Theme",
-    "security": "Security",
-    "biometricAuth": "Biometric Authentication",
-    "enableBiometrics": "Enable Biometric Authentication",
+
     "about": "About",
     "version": "Version",
     "contactDeveloper": "Contact Developer",

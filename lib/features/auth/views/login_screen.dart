@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_night_recommender/features/home/views/main_screen.dart';
 import 'package:movie_night_recommender/l10n/arb/app_localizations.dart';
 import '../view_models/auth_bloc.dart';
 import 'widgets/password_text_field.dart';
@@ -37,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
         listener: (context, state) {
           if (state.status == AuthStatus.authenticated) {
             // Navigate to Home
-            Navigator.of(context).pushReplacementNamed('/');
+            Navigator.of(context).pushReplacementNamed(MainScreen.routeName);
           } else if (state.status == AuthStatus.unauthenticated &&
               state.errorMessage != null) {
             ScaffoldMessenger.of(context).showSnackBar(

@@ -236,24 +236,6 @@ abstract class AppLocalizations {
   /// **'System Theme'**
   String get systemTheme;
 
-  /// No description provided for @security.
-  ///
-  /// In en, this message translates to:
-  /// **'Security'**
-  String get security;
-
-  /// No description provided for @biometricAuth.
-  ///
-  /// In en, this message translates to:
-  /// **'Biometric Authentication'**
-  String get biometricAuth;
-
-  /// No description provided for @enableBiometrics.
-  ///
-  /// In en, this message translates to:
-  /// **'Enable Biometric Authentication'**
-  String get enableBiometrics;
-
   /// No description provided for @about.
   ///
   /// In en, this message translates to:
