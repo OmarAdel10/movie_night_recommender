@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:movie_night_recommender/features/movie_detail/views/movie_detail_screen.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../../data/models/movie_model.dart';
 
@@ -53,7 +54,7 @@ class MovieCarousel extends StatelessWidget {
               return GestureDetector(
                 onTap: () {
                   Navigator.of(context).pushNamed(
-                    '/movie-detail',
+                    MovieDetailScreen.routeName,
                     arguments: {
                       'movieId': movie.id,
                       // 'heroTag': movie.id,

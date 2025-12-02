@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_night_recommender/features/movie_detail/views/movie_detail_screen.dart';
+import 'package:movie_night_recommender/l10n/arb/app_localizations.dart';
 import '../../../data/repositories/movie_repository.dart';
 import '../../../data/models/movie_model.dart';
 import '../view_models/search_bloc.dart';
@@ -39,6 +41,8 @@ class _SearchViewState extends State<_SearchView> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+
     
     return Column(
       children: [
@@ -48,7 +52,7 @@ class _SearchViewState extends State<_SearchView> {
             controller: _searchController,
             autofocus: false,
             decoration: InputDecoration(
-              hintText: 'Search movies...',
+              hintText: l10n.searchMovies,
               prefixIcon: const Icon(Icons.search),
               suffixIcon: _searchController.text.isNotEmpty
                   ? IconButton(
@@ -87,7 +91,7 @@ class _SearchViewState extends State<_SearchView> {
               }
 
               if (state.status == SearchStatus.failure) {
-                return _buildError(context, state.errorMessage ?? 'Unknown error');
+                return _buildError(context, state.errorMessage ?? l10n.unknownError);
               }
 
               if (state.results.isEmpty) {
@@ -105,7 +109,8 @@ class _SearchViewState extends State<_SearchView> {
 
   Widget _buildInitialState(BuildContext context) {
     final theme = Theme.of(context);
-    
+    final l10n = AppLocalizations.of(context)!;
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -117,14 +122,14 @@ class _SearchViewState extends State<_SearchView> {
           ),
           const SizedBox(height: 16),
           Text(
-            'Search for movies',
+            l10n.searchForMovies,
             style: theme.textTheme.titleLarge?.copyWith(
               color: Colors.grey[600],
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            'Enter a movie title to start',
+            l10n.enterMovieTitle,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: Colors.grey[600],
             ),
@@ -136,6 +141,8 @@ class _SearchViewState extends State<_SearchView> {
 
   Widget _buildNoResults(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+
     
     return Center(
       child: Column(
@@ -148,14 +155,14 @@ class _SearchViewState extends State<_SearchView> {
           ),
           const SizedBox(height: 16),
           Text(
-            'No results found',
+            l10n.noResultsFound,
             style: theme.textTheme.titleLarge?.copyWith(
               color: Colors.grey[600],
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            'Try different keywords',
+            l10n.tryDifferentKeywords,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: Colors.grey[600],
             ),
@@ -183,6 +190,8 @@ class _SearchViewState extends State<_SearchView> {
   }
 
   Widget _buildError(BuildContext context, String message) {
+        final l10n = AppLocalizations.of(context)!;
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -196,7 +205,7 @@ class _SearchViewState extends State<_SearchView> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Search failed',
+              l10n.searchFailed,
               style: Theme.of(context).textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
@@ -225,10 +234,9 @@ class _MovieGridCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).pushNamed(
-          '/movie-detail',
+          MovieDetailScreen.routeName,
           arguments: {
             'movieId': movie.id,
-            'heroTag': 'search-movie-${movie.id}',
           },
         );
       },
@@ -236,27 +244,24 @@ class _MovieGridCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: Hero(
-              tag: 'search-movie-${movie.id}',
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: movie.posterPath.isNotEmpty
-                    ? Image.network(
-                        'https://image.tmdb.org/t/p/w500${movie.posterPath}',
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            color: Colors.grey[900],
-                            child: const Icon(Icons.movie, size: 40),
-                          );
-                        },
-                      )
-                    : Container(
-                        color: Colors.grey[900],
-                        child: const Icon(Icons.movie, size: 40),
-                      ),
-              ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: movie.posterPath.isNotEmpty
+                  ? Image.network(
+                      'https://image.tmdb.org/t/p/w500${movie.posterPath}',
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          color: Colors.grey[900],
+                          child: const Icon(Icons.movie, size: 40),
+                        );
+                      },
+                    )
+                  : Container(
+                      color: Colors.grey[900],
+                      child: const Icon(Icons.movie, size: 40),
+                    ),
             ),
           ),
           const SizedBox(height: 8),

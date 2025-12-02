@@ -110,11 +110,11 @@ abstract class AppLocalizations {
   /// **'Discover'**
   String get homeTitle;
 
-  /// No description provided for @trending.
+  /// No description provided for @trendingNow.
   ///
   /// In en, this message translates to:
-  /// **'Trending'**
-  String get trending;
+  /// **'Trending Now'**
+  String get trendingNow;
 
   /// No description provided for @popular.
   ///
@@ -134,11 +134,65 @@ abstract class AppLocalizations {
   /// **'Search'**
   String get search;
 
+  /// No description provided for @searchMovies.
+  ///
+  /// In en, this message translates to:
+  /// **'Search movies...'**
+  String get searchMovies;
+
+  /// No description provided for @searchForMovies.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for movies'**
+  String get searchForMovies;
+
+  /// No description provided for @enterMovieTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a movie title to start'**
+  String get enterMovieTitle;
+
+  /// No description provided for @noResultsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No results found'**
+  String get noResultsFound;
+
+  /// No description provided for @tryDifferentKeywords.
+  ///
+  /// In en, this message translates to:
+  /// **'Try different keywords'**
+  String get tryDifferentKeywords;
+
+  /// No description provided for @searchFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Search failed'**
+  String get searchFailed;
+
+  /// No description provided for @unknownError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown error'**
+  String get unknownError;
+
   /// No description provided for @watchlist.
   ///
   /// In en, this message translates to:
   /// **'Watchlist'**
   String get watchlist;
+
+  /// No description provided for @yourWatchlistIsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Your watchlist is empty'**
+  String get yourWatchlistIsEmpty;
+
+  /// No description provided for @addMoviesToYourWatchlistToSeeThemHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Add movies to your watchlist to see them here'**
+  String get addMoviesToYourWatchlistToSeeThemHere;
 
   /// No description provided for @settings.
   ///
@@ -271,6 +325,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Logout'**
   String get logout;
+
+  /// No description provided for @oopsSomethingWentWrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Oops! Something went wrong'**
+  String get oopsSomethingWentWrong;
+
+  /// No description provided for @tryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get tryAgain;
+
+  /// No description provided for @min.
+  ///
+  /// In en, this message translates to:
+  /// **'Min'**
+  String get min;
+
+  /// No description provided for @overview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get overview;
+
+  /// No description provided for @cast.
+  ///
+  /// In en, this message translates to:
+  /// **'Cast'**
+  String get cast;
+
+  /// No description provided for @failedToLoadMovieDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load movie details'**
+  String get failedToLoadMovieDetails;
+
+  /// No description provided for @goBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Go Back'**
+  String get goBack;
+
+  /// No description provided for @pleaseEnterYourEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your email'**
+  String get pleaseEnterYourEmail;
+
+  /// No description provided for @pleaseEnterYourPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your password'**
+  String get pleaseEnterYourPassword;
+
+  /// No description provided for @dontHaveAnAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account?'**
+  String get dontHaveAnAccount;
+
+  /// No description provided for @createAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get createAccount;
+
+  /// No description provided for @pleaseEnterAUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a username'**
+  String get pleaseEnterAUsername;
+
+  /// No description provided for @passwordMustBeAtLeast6Characters.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get passwordMustBeAtLeast6Characters;
+
+  /// No description provided for @confirmPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get confirmPassword;
+
+  /// No description provided for @passwordsDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get passwordsDoNotMatch;
 }
 
 class _AppLocalizationsDelegate

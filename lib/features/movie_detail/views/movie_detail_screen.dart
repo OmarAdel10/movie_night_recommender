@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:movie_night_recommender/l10n/arb/app_localizations.dart';
 import '../../../data/repositories/movie_repository.dart';
 import '../../../data/models/movie_detail_model.dart';
 import '../../../data/models/movie_model.dart';
@@ -21,9 +22,9 @@ class MovieDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => MovieDetailBloc(
-        movieRepository: context.read<MovieRepository>(),
-      )..add(MovieDetailLoadRequested(movieId)),
+      create: (context) =>
+          MovieDetailBloc(movieRepository: context.read<MovieRepository>())
+            ..add(MovieDetailLoadRequested(movieId)),
       child: _MovieDetailView(),
     );
   }
@@ -36,16 +37,21 @@ class _MovieDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: BlocBuilder<MovieDetailBloc, MovieDetailState>(
         builder: (context, state) {
-          if (state.status == MovieDetailStatus.loading || 
+          if (state.status == MovieDetailStatus.loading ||
               state.status == MovieDetailStatus.initial) {
             return const Center(child: CircularProgressIndicator());
           }
 
           if (state.status == MovieDetailStatus.failure) {
-            return _buildError(context, state.errorMessage ?? 'Unknown error');
+            return _buildError(
+              context,
+              state.errorMessage ?? l10n.unknownError,
+            );
           }
 
           final movie = state.movieDetail!;
@@ -57,7 +63,8 @@ class _MovieDetailView extends StatelessWidget {
 
   Widget _buildContent(BuildContext context, MovieDetail movie) {
     final theme = Theme.of(context);
-    
+    final l10n = AppLocalizations.of(context)!;
+
     return CustomScrollView(
       slivers: [
         // App Bar with Backdrop
@@ -69,9 +76,9 @@ class _MovieDetailView extends StatelessWidget {
               builder: (context, watchlistState) {
                 final movie = context.read<MovieDetailBloc>().state.movieDetail;
                 if (movie == null) return const SizedBox.shrink();
-                
+
                 final isInWatchlist = watchlistState.isInWatchlist(movie.id);
-                
+
                 return IconButton(
                   icon: Icon(
                     isInWatchlist ? Icons.bookmark : Icons.bookmark_border,
@@ -101,11 +108,11 @@ class _MovieDetailView extends StatelessWidget {
               children: [
                 if (movie.backdropPath.isNotEmpty)
                   CachedNetworkImage(
-                    imageUrl: 'https://image.tmdb.org/t/p/original${movie.backdropPath}',
+                    imageUrl:
+                        'https://image.tmdb.org/t/p/original${movie.backdropPath}',
                     fit: BoxFit.cover,
-                    placeholder: (context, url) => Container(
-                      color: Colors.grey[900],
-                    ),
+                    placeholder: (context, url) =>
+                        Container(color: Colors.grey[900]),
                     errorWidget: (context, url, error) => Container(
                       color: Colors.grey[900],
                       child: const Icon(Icons.error),
@@ -128,7 +135,7 @@ class _MovieDetailView extends StatelessWidget {
             ),
           ),
         ),
-        
+
         // Content
         SliverToBoxAdapter(
           child: Padding(
@@ -145,14 +152,15 @@ class _MovieDetailView extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(12),
                         child: CachedNetworkImage(
-                          imageUrl: 'https://image.tmdb.org/t/p/w500${movie.posterPath}',
+                          imageUrl:
+                              'https://image.tmdb.org/t/p/w500${movie.posterPath}',
                           width: 120,
                           height: 180,
                           fit: BoxFit.cover,
                         ),
                       ),
                     const SizedBox(width: 16),
-                    
+
                     // Title and Info
                     Expanded(
                       child: Column(
@@ -197,7 +205,7 @@ class _MovieDetailView extends StatelessWidget {
                           const SizedBox(height: 4),
                           if (movie.runtime > 0)
                             Text(
-                              '${movie.runtime} min',
+                              '${movie.runtime} ${l10n.min}',
                               style: theme.textTheme.bodyMedium,
                             ),
                         ],
@@ -205,9 +213,9 @@ class _MovieDetailView extends StatelessWidget {
                     ),
                   ],
                 ),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // Genres
                 if (movie.genres.isNotEmpty)
                   Wrap(
@@ -216,33 +224,32 @@ class _MovieDetailView extends StatelessWidget {
                     children: movie.genres.map((genre) {
                       return Chip(
                         label: Text(genre.name),
-                        backgroundColor: theme.primaryColor.withValues(alpha: 0.2),
+                        backgroundColor: theme.primaryColor.withValues(
+                          alpha: 0.2,
+                        ),
                         labelStyle: TextStyle(color: theme.primaryColor),
                       );
                     }).toList(),
                   ),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // Overview
                 Text(
-                  'Overview',
+                  l10n.overview,
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 8),
-                Text(
-                  movie.overview,
-                  style: theme.textTheme.bodyLarge,
-                ),
-                
+                Text(movie.overview, style: theme.textTheme.bodyLarge),
+
                 const SizedBox(height: 24),
-                
+
                 // Cast
                 if (movie.cast.isNotEmpty) ...[
                   Text(
-                    'Cast',
+                    l10n.cast,
                     style: theme.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -260,7 +267,7 @@ class _MovieDetailView extends StatelessWidget {
                     ),
                   ),
                 ],
-                
+
                 const SizedBox(height: 24),
               ],
             ),
@@ -279,7 +286,8 @@ class _MovieDetailView extends StatelessWidget {
           ClipOval(
             child: cast.profilePath.isNotEmpty
                 ? CachedNetworkImage(
-                    imageUrl: 'https://image.tmdb.org/t/p/w200${cast.profilePath}',
+                    imageUrl:
+                        'https://image.tmdb.org/t/p/w200${cast.profilePath}',
                     width: 80,
                     height: 80,
                     fit: BoxFit.cover,
@@ -328,21 +336,18 @@ class _MovieDetailView extends StatelessWidget {
     );
   }
 
-  Widget _buildError(BuildContext context, String message) {
+  Widget _buildError(BuildContext context, String message) {    final l10n = AppLocalizations.of(context)!;
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.error_outline,
-              size: 64,
-              color: Colors.red[400],
-            ),
+            Icon(Icons.error_outline, size: 64, color: Colors.red[400]),
             const SizedBox(height: 16),
             Text(
-              'Failed to load movie details',
+              l10n.failedToLoadMovieDetails,
               style: Theme.of(context).textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
@@ -357,7 +362,7 @@ class _MovieDetailView extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Go Back'),
+              child: Text(l10n.goBack),
             ),
           ],
         ),

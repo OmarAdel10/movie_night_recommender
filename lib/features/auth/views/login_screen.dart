@@ -83,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your email';
+                            return l10n.pleaseEnterYourEmail;
                           }
                           return null;
                         },
@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         labelText: l10n.password,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
+                            return l10n.pleaseEnterYourPassword;
                           }
                           return null;
                         },
@@ -152,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text("Don't have an account?"),
+                          Text(l10n.dontHaveAnAccount),
                           TextButton(
                             onPressed: () {
                               Navigator.of(context).pushNamed(SignUpScreen.routeName);

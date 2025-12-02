@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_night_recommender/features/movie_detail/views/movie_detail_screen.dart';
+import 'package:movie_night_recommender/l10n/arb/app_localizations.dart';
 import '../view_models/watchlist_bloc.dart';
 
 class WatchlistScreen extends StatelessWidget {
@@ -29,10 +31,9 @@ class WatchlistScreen extends StatelessWidget {
             return GestureDetector(
               onTap: () {
                 Navigator.of(context).pushNamed(
-                  '/movie-detail',
+                  MovieDetailScreen.routeName,
                   arguments: {
                     'movieId': movie.id,
-                    'heroTag': 'watchlist-movie-${movie.id}',
                   },
                 );
               },
@@ -42,27 +43,24 @@ class WatchlistScreen extends StatelessWidget {
                   Expanded(
                     child: Stack(
                       children: [
-                        Hero(
-                          tag: 'watchlist-movie-${movie.id}',
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: movie.posterPath.isNotEmpty
-                                ? Image.network(
-                                    'https://image.tmdb.org/t/p/w500${movie.posterPath}',
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Container(
-                                        color: Colors.grey[900],
-                                        child: const Icon(Icons.movie, size: 40),
-                                      );
-                                    },
-                                  )
-                                : Container(
-                                    color: Colors.grey[900],
-                                    child: const Icon(Icons.movie, size: 40),
-                                  ),
-                          ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: movie.posterPath.isNotEmpty
+                              ? Image.network(
+                                  'https://image.tmdb.org/t/p/w500${movie.posterPath}',
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Container(
+                                      color: Colors.grey[900],
+                                      child: const Icon(Icons.movie, size: 40),
+                                    );
+                                  },
+                                )
+                              : Container(
+                                  color: Colors.grey[900],
+                                  child: const Icon(Icons.movie, size: 40),
+                                ),
                         ),
                         Positioned(
                           top: 4,
@@ -117,7 +115,8 @@ class WatchlistScreen extends StatelessWidget {
 
   Widget _buildEmptyState(BuildContext context) {
     final theme = Theme.of(context);
-    
+    final l10n = AppLocalizations.of(context)!;
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -129,14 +128,14 @@ class WatchlistScreen extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            'Your watchlist is empty',
+            l10n.yourWatchlistIsEmpty,
             style: theme.textTheme.titleLarge?.copyWith(
               color: Colors.grey[600],
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            'Add movies to your watchlist to see them here',
+            l10n.addMoviesToYourWatchlistToSeeThemHere,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: Colors.grey[600],
             ),

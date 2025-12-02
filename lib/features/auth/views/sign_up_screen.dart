@@ -61,7 +61,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   children: [
                     const SizedBox(height: 24),
                     Text(
-                      'Create Account',
+                      l10n.createAccount,
                       style: theme.textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -72,7 +72,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     TextFormField(
                       controller: _usernameController,
                       decoration: InputDecoration(
-                        labelText: 'Username',
+                        labelText: l10n.username,
                         prefixIcon: const Icon(Icons.person_outline),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -80,7 +80,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a username';
+                          return l10n.pleaseEnterAUsername;
                         }
                         return null;
                       },
@@ -98,7 +98,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your email';
+                          return l10n.pleaseEnterYourEmail;
                         }
                         return null;
                       },
@@ -110,10 +110,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       labelText: l10n.password,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your password';
+                          return l10n.pleaseEnterYourPassword;
                         }
                         if (value.length < 6) {
-                          return 'Password must be at least 6 characters';
+                          return l10n.passwordMustBeAtLeast6Characters;
                         }
                         return null;
                       },
@@ -122,10 +122,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     // Confirm Password
                     PasswordTextField(
                       controller: _confirmPasswordController,
-                      labelText: 'Confirm Password',
+                      labelText: l10n.confirmPassword,
                       validator: (value) {
                         if (value != _passwordController.text) {
-                          return 'Passwords do not match';
+                          return l10n.passwordsDoNotMatch;
                         }
                         return null;
                       },

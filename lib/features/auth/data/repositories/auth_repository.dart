@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -62,7 +64,7 @@ class AuthRepository {
     }
   }
 
-
+  //! Doesn't work
   //   Future<UserCredential> signInWithGoogle() async {
   //     try {
   //       // Use dynamic calls to be resilient across google_sign_in versions
@@ -89,6 +91,7 @@ class AuthRepository {
   //     }
   //   }
 
+  //* Works
   Future<UserCredential> signInWithGoogle() async {
     try {
       // Initialize GoogleSignIn with serverClientId (required for Android)
@@ -110,7 +113,13 @@ class AuthRepository {
 
       // Once signed in, return the UserCredential
       return await _firebaseAuth.signInWithCredential(credential);
+    } on GoogleSignInException catch (e) {
+      // Log the specific error code
+      log('Google Sign-In Error: ${e.code}');
+      log('Google Sign-In Message: ${e.description}');
+      throw Exception('Google Sign-In failed: ${e.code}');
     } catch (e) {
+      log('General Sign-In Error: $e');
       throw Exception(e.toString());
     }
   }
