@@ -25,11 +25,4 @@ final class SettingsLocaleChanged extends SettingsEvent {
   List<Object> get props => [locale];
 }
 
-final class SettingsLocalAuthChanged extends SettingsEvent {
-  final bool isEnabled;
 
-  const SettingsLocalAuthChanged(this.isEnabled);
-
-  @override
-  List<Object> get props => [isEnabled];
-}

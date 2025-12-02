@@ -37,7 +37,7 @@ dependencies:
   flutter_bloc: ^9.1.1
   hydrated_bloc: ^10.1.1
   dio: ^5.9.0
-  google_fonts: ^6.3.2
+  google_fonts: ^6.3.3
   cached_network_image: ^3.4.1
   flutter_svg: ^2.2.3
   path_provider: ^2.1.5
@@ -45,8 +45,6 @@ dependencies:
   intl: ^0.20.2
   firebase_core: ^4.2.1
   firebase_auth: ^6.1.2
-  # Removed Apple sign-in (not used)
-  # sign_in_with_apple: ^7.0.1
   google_sign_in: ^7.2.0
   flutter_animate: ^4.5.2
   page_transition: ^2.2.1

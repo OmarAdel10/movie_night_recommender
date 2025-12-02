@@ -78,15 +78,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get systemTheme => 'مظهر النظام';
 
   @override
-  String get security => 'الأمان';
-
-  @override
-  String get biometricAuth => 'المصادقة البيومترية';
-
-  @override
-  String get enableBiometrics => 'تفعيل المصادقة البيومترية';
-
-  @override
   String get about => 'حول التطبيق';
 
   @override

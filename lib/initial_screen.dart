@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_night_recommender/features/auth/view_models/auth_bloc.dart';
 import 'package:movie_night_recommender/features/auth/views/login_screen.dart';
 import 'package:movie_night_recommender/features/home/views/main_screen.dart';
+import 'package:movie_night_recommender/features/onboarding/view_models/onboarding_bloc.dart';
+import 'package:movie_night_recommender/features/onboarding/views/onboarding_screen.dart';
 
 class InitialScreen extends StatelessWidget {
   static const String routeName = '/initial';
@@ -11,13 +13,20 @@ class InitialScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final onboardingBloc = context.read<OnboardingBloc>();
+    context.read<AuthBloc>().add(AuthCheckRequested());
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, authState) {
-        context.read<AuthBloc>().add(AuthCheckRequested());
-        if (authState.status == AuthStatus.authenticated) {
-          Navigator.of(context).pushReplacementNamed(MainScreen.routeName);
-        } else if (authState.status == AuthStatus.unauthenticated) {
-          Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+        if (onboardingBloc.state.hasSeenOnboarding) {
+          if (authState.status == AuthStatus.authenticated) {
+            Navigator.of(context).pushReplacementNamed(MainScreen.routeName);
+          } else if (authState.status == AuthStatus.unauthenticated) {
+            Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+          }
+        } else {
+          Navigator.of(
+            context,
+          ).pushReplacementNamed(OnboardingScreen.routeName);
         }
       },
       child: Scaffold(
