@@ -1,63 +1,105 @@
-import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'dart:async';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../../../data/models/movie_model.dart';
+import '../../auth/view_models/auth_bloc.dart';
+import '../data/repositories/watchlist_repository.dart';
 
 part 'watchlist_event.dart';
 part 'watchlist_state.dart';
 
-class WatchlistBloc extends HydratedBloc<WatchlistEvent, WatchlistState> {
-  WatchlistBloc() : super(const WatchlistState()) {
+class WatchlistBloc extends Bloc<WatchlistEvent, WatchlistState> {
+  final WatchlistRepository _watchlistRepository;
+  final AuthBloc _authBloc;
+  StreamSubscription? _authSubscription;
+  StreamSubscription? _watchlistSubscription;
+
+  WatchlistBloc({
+    required WatchlistRepository watchlistRepository,
+    required AuthBloc authBloc,
+  })  : _watchlistRepository = watchlistRepository,
+        _authBloc = authBloc,
+        super(const WatchlistState()) {
     on<WatchlistMovieAdded>(_onWatchlistMovieAdded);
     on<WatchlistMovieRemoved>(_onWatchlistMovieRemoved);
     on<WatchlistMovieToggled>(_onWatchlistMovieToggled);
+    on<WatchlistUpdated>(_onWatchlistUpdated);
+    on<WatchlistClearRequested>(_onWatchlistClearRequested);
+
+    _authSubscription = _authBloc.stream.listen((authState) {
+      if (authState.status == AuthStatus.authenticated) {
+        _subscribeToWatchlist(authState.user!.uid);
+      } else {
+        add(WatchlistClearRequested());
+        _watchlistSubscription?.cancel();
+      }
+    });
+    
+    // Initialize if already authenticated
+    if (_authBloc.state.status == AuthStatus.authenticated) {
+      _subscribeToWatchlist(_authBloc.state.user!.uid);
+    }
   }
 
-  void _onWatchlistMovieAdded(
+  void _subscribeToWatchlist(String userId) {
+    _watchlistSubscription?.cancel();
+    _watchlistSubscription = _watchlistRepository.getWatchlist(userId).listen(
+      (movies) => add(WatchlistUpdated(movies)),
+    );
+  }
+
+  void _onWatchlistUpdated(
+    WatchlistUpdated event,
+    Emitter<WatchlistState> emit,
+  ) {
+    emit(state.copyWith(movies: event.movies));
+  }
+
+  void _onWatchlistClearRequested(
+    WatchlistClearRequested event,
+    Emitter<WatchlistState> emit,
+  ) {
+    emit(const WatchlistState(movies: []));
+  }
+
+  Future<void> _onWatchlistMovieAdded(
     WatchlistMovieAdded event,
     Emitter<WatchlistState> emit,
-  ) {
-    if (!state.isInWatchlist(event.movie.id)) {
-      emit(state.copyWith(movies: [...state.movies, event.movie]));
+  ) async {
+    final user = _authBloc.state.user;
+    if (user != null) {
+      await _watchlistRepository.addMovie(user.uid, event.movie);
     }
   }
 
-  void _onWatchlistMovieRemoved(
+  Future<void> _onWatchlistMovieRemoved(
     WatchlistMovieRemoved event,
     Emitter<WatchlistState> emit,
-  ) {
-    emit(state.copyWith(
-      movies: state.movies.where((m) => m.id != event.movieId).toList(),
-    ));
+  ) async {
+    final user = _authBloc.state.user;
+    if (user != null) {
+      await _watchlistRepository.removeMovie(user.uid, event.movieId);
+    }
   }
 
-  void _onWatchlistMovieToggled(
+  Future<void> _onWatchlistMovieToggled(
     WatchlistMovieToggled event,
     Emitter<WatchlistState> emit,
-  ) {
-    if (state.isInWatchlist(event.movie.id)) {
-      emit(state.copyWith(
-        movies: state.movies.where((m) => m.id != event.movie.id).toList(),
-      ));
-    } else {
-      emit(state.copyWith(movies: [...state.movies, event.movie]));
+  ) async {
+    final user = _authBloc.state.user;
+    if (user != null) {
+      if (state.isInWatchlist(event.movie.id)) {
+        await _watchlistRepository.removeMovie(user.uid, event.movie.id);
+      } else {
+        await _watchlistRepository.addMovie(user.uid, event.movie);
+      }
     }
   }
 
   @override
-  WatchlistState? fromJson(Map<String, dynamic> json) {
-    try {
-      return WatchlistState.fromJson(json);
-    } catch (_) {
-      return null;
-    }
-  }
-
-  @override
-  Map<String, dynamic>? toJson(WatchlistState state) {
-    try {
-      return state.toJson();
-    } catch (_) {
-      return null;
-    }
+  Future<void> close() {
+    _authSubscription?.cancel();
+    _watchlistSubscription?.cancel();
+    return super.close();
   }
 }

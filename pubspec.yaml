@@ -54,6 +54,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   url_launcher: ^6.3.2
+  cloud_firestore: ^6.1.0
 
 dev_dependencies:
   flutter_test:

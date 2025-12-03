@@ -236,12 +236,6 @@ abstract class AppLocalizations {
   /// **'Sign in with Google'**
   String get signInWithGoogle;
 
-  /// No description provided for @signInWithApple.
-  ///
-  /// In en, this message translates to:
-  /// **'Sign in with Apple'**
-  String get signInWithApple;
-
   /// No description provided for @profile.
   ///
   /// In en, this message translates to:

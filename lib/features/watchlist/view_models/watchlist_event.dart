@@ -33,3 +33,17 @@ class WatchlistMovieToggled extends WatchlistEvent {
   @override
   List<Object> get props => [movie];
 }
+
+class WatchlistUpdated extends WatchlistEvent {
+  final List<Movie> movies;
+
+  const WatchlistUpdated(this.movies);
+
+  @override
+  List<Object> get props => [movies];
+}
+
+class WatchlistClearRequested extends WatchlistEvent {
+  @override
+  List<Object> get props => [];
+}
