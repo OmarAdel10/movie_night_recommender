@@ -19,6 +19,7 @@ import 'features/onboarding/views/onboarding_screen.dart';
 import 'features/home/views/main_screen.dart';
 import 'features/movie_detail/views/movie_detail_screen.dart';
 import 'features/watchlist/view_models/watchlist_bloc.dart';
+import 'features/watchlist/data/repositories/watchlist_repository.dart';
 import 'features/settings/view_models/settings_bloc.dart';
 
 void main() async {
@@ -33,11 +34,13 @@ void main() async {
 
   final AuthRepository authRepository = AuthRepository();
   final MovieRepository movieRepository = MovieRepository();
+  final WatchlistRepository watchlistRepository = WatchlistRepository();
 
   runApp(
     MovieNightApp(
       authRepository: authRepository,
       movieRepository: movieRepository,
+      watchlistRepository: watchlistRepository,
     ),
   );
 }
@@ -45,11 +48,13 @@ void main() async {
 class MovieNightApp extends StatelessWidget {
   final AuthRepository authRepository;
   final MovieRepository movieRepository;
+  final WatchlistRepository watchlistRepository;
 
   const MovieNightApp({
     super.key,
     required this.authRepository,
     required this.movieRepository,
+    required this.watchlistRepository,
   });
 
   @override
@@ -58,6 +63,7 @@ class MovieNightApp extends StatelessWidget {
       providers: [
         RepositoryProvider.value(value: authRepository),
         RepositoryProvider.value(value: movieRepository),
+        RepositoryProvider.value(value: watchlistRepository),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -65,7 +71,12 @@ class MovieNightApp extends StatelessWidget {
           BlocProvider(
             create: (_) => OnboardingBloc(movieRepository: movieRepository),
           ),
-          BlocProvider(create: (_) => WatchlistBloc()),
+          BlocProvider(
+            create: (context) => WatchlistBloc(
+              watchlistRepository: RepositoryProvider.of<WatchlistRepository>(context),
+              authBloc: BlocProvider.of<AuthBloc>(context),
+            ),
+          ),
           BlocProvider(create: (_) => SettingsBloc()),
         ],
         child: BlocBuilder<SettingsBloc, SettingsState>(

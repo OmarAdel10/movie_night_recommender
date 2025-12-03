@@ -79,9 +79,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get signInWithGoogle => 'تسجيل الدخول باستخدام جوجل';
 
   @override
-  String get signInWithApple => 'Sign in with Apple';
-
-  @override
   String get profile => 'الملف الشخصي';
 
   @override
